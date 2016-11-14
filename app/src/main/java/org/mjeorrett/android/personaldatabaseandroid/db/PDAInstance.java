@@ -1,11 +1,16 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +20,15 @@ import java.util.List;
 
 public class PDAInstance implements PDAEntity {
 
-    private static final String TITLE = "Instance";
-    private static final String MASTER_DATABASE_NAME = "pda_database";
+    private static final String TAG = "PDAInstance";
 
-    private PDADatabase mPDADatabase;
+    private static final String TITLE = "Instance";
+
+    private List<PDADatabase> mDatabases;
 
     public PDAInstance( Context context ) {
 
-        mPDADatabase = new PDADatabase( context, MASTER_DATABASE_NAME );
+        this.loadDatabases( context );
     }
 
     public String getTitle() {
@@ -31,34 +37,78 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Nullable
-    private List<String> getDatabaseNames() {
+    private List<String> getUserDatabaseNames( Context context ) {
 
-        List<Pair<String, String>> attachedDatabases = mPDADatabase.exec().getAttachedDbs();
-        List<String> result = new ArrayList<>();
+        PackageManager packageManager = context.getPackageManager();
+        String packageName = context.getPackageName();
+        PackageInfo packageInfo = null;
 
-        for ( Pair<String, String> dbInfo : attachedDatabases ) {
-
-            String fullPath = dbInfo.second;
-            int dbNameStartIndex = fullPath.lastIndexOf( '/' ) + 1;
-            String dbFile = fullPath.substring( dbNameStartIndex );
-            dbFile = FilenameUtils.getBaseName( dbFile );
-            result.add( dbFile );
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, 0);
+        } catch ( PackageManager.NameNotFoundException ex ) {
+            Log.w( TAG, "Error package name not found ", ex );
         }
 
-        return result;
+        List<String> results = null;
+
+        if (packageInfo != null ) {
+
+            String dataDirectory = packageInfo.applicationInfo.dataDir;
+            String databasesPath = dataDirectory + "/databases";
+
+            results = new ArrayList<>();
+
+            File dir = new File( databasesPath );
+            File[] databaseFiles = dir.listFiles( new FilenameFilter() {
+
+                @Override
+                public boolean accept( File dir, String name ) {
+
+                    return name.endsWith(".db");
+                }
+            });
+
+            if ( databaseFiles != null ) {
+
+                for (File databaseFile : databaseFiles) {
+
+                    String fullPath = databaseFile.getPath();
+                    int dbNameStartIndex = fullPath.lastIndexOf('/') + 1;
+                    String dbFile = fullPath.substring(dbNameStartIndex);
+                    dbFile = FilenameUtils.getBaseName(dbFile);
+
+                    results.add(dbFile);
+                }
+            }
+        }
+
+        return results;
     }
 
     @Override
-    public List<PDAEntity> getChildEntites( Context context ) {
+    public List<PDAEntity> getChildEntities() {
 
-        List<PDAEntity> children = new ArrayList<>();
-        List<String> databaseNames = this.getDatabaseNames();
+        return new ArrayList<PDAEntity>( mDatabases );
+    }
 
-        for ( String databaseName : databaseNames ) {
-            PDADatabase database = new PDADatabase( context, databaseName );
-            children.add( database );
+    private void loadDatabases(Context context ) {
+
+        mDatabases = new ArrayList<>();
+        List<String> databaseNames = this.getUserDatabaseNames( context );
+
+        if ( databaseNames != null ) {
+
+            for (String databaseName : databaseNames) {
+                PDADatabase database = new PDADatabase(context, databaseName);
+                mDatabases.add(database);
+            }
         }
+    }
 
-        return children;
+    @Override
+    public void createNewChildEntity( Context context, String title ) {
+
+        PDADatabase newDatabase = new PDADatabase( context, title );
+        mDatabases.add( newDatabase );
     }
 }

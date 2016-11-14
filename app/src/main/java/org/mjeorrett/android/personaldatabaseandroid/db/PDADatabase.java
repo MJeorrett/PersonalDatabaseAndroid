@@ -3,6 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  */
 
 public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
+
+    private static final String TAG = "PDADatabase";
 
     private static final int VERSION = 1;
 
@@ -30,14 +33,22 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
         mDatabase = this.getWritableDatabase();
     }
 
+    @Override
     public String getTitle() {
 
         return mName;
     }
 
     @Override
-    public List<PDAEntity> getChildEntites(Context context) {
+    public List<PDAEntity> getChildEntities() {
+
         return null;
+    }
+
+    @Override
+    public void createNewChildEntity( Context context, String title ) {
+
+        Log.i( TAG, String.format( "createNewChildEntity( %s ) called", title ) );
     }
 
     public SQLiteDatabase exec() {

@@ -11,5 +11,6 @@ import java.util.List;
 public interface PDAEntity {
 
     String getTitle();
-    List<PDAEntity> getChildEntites( Context context );
+    List<PDAEntity> getChildEntities();
+    void createNewChildEntity( Context context, String title );
 }

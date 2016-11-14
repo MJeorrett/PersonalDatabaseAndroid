@@ -1,24 +1,16 @@
 package org.mjeorrett.android.personaldatabaseandroid.core;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.R;
@@ -82,7 +74,7 @@ public class PDAEntityListFragment extends Fragment {
         mPDAEntityIdentifier = getArguments().getString( ARG_ENTITY_IDENTIFIER );
 
         mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier);
-        mChildPDAEntities = mPDAEntity.getChildEntites( getActivity() );
+        mChildPDAEntities = mPDAEntity.getChildEntities();
     }
 
     @Nullable
@@ -96,7 +88,7 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        this.updateUI();
+        this.setUpUI();
 
         return view;
     }
@@ -113,30 +105,39 @@ public class PDAEntityListFragment extends Fragment {
         switch ( item.getItemId() ) {
 
             case R.id.fragment_pdaentity_list_add_entity:
-
-                EditTextDialogue.run( getActivity(), "new_database", "Database Name", new EditTextDialogue.OnClickListener() {
-
-                    @Override
-                    public void onOKClicked( String enteredText ) {
-                        Log.d( TAG, "text entered: " + enteredText );
-                    }
-                });
-
+                this.createNewChildEntity();
                 return true;
 
             default:
-
                 return super.onOptionsItemSelected( item );
 
         }
     }
 
-    private void updateUI() {
+    private void createNewChildEntity() {
+
+        EditTextDialogue.run(
+                getActivity(),
+                "new_database",
+                "Database Name",
+                new EditTextDialogue.OnClickListener() {
+
+            @Override
+            public void onOKClicked( String enteredText ) {
+
+                mPDAEntity.createNewChildEntity( getActivity(), enteredText );
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void setUpUI() {
 
         mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier );
-        mChildPDAEntities = mPDAEntity.getChildEntites( getActivity() );
+        mChildPDAEntities = mPDAEntity.getChildEntities();
         mAdapter = new PDAEntityAdapter( mChildPDAEntities );
         mRecyclerView.setAdapter( mAdapter );
+
     }
 
     private class PDAEntityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
