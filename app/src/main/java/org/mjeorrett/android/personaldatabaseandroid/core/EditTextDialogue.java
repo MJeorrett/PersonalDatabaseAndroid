@@ -36,7 +36,6 @@ public class EditTextDialogue extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Log.d(TAG, editText.getText().toString());
                 listener.onOKClicked( editText.getText().toString() );
             }
         });
