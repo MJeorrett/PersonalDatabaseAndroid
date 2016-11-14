@@ -1,16 +1,24 @@
 package org.mjeorrett.android.personaldatabaseandroid.core;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.R;
@@ -26,20 +34,33 @@ import java.util.List;
 
 public class PDAEntityListFragment extends Fragment {
 
+    private static final String TAG = "PDAEntityListFragment";
+
     private static final String ARG_ENTITY_TYPE =
             "com.mjeorrett.android.personal_database_android.entity_type";
 
     private static final String ARG_ENTITY_IDENTIFIER =
             "com.mjeorrett.android.personal_database_android.entity_identifier";
 
+    private static final String ARG_ADD_ENTITY_ACTIVITY_CLASS =
+            "com.mjeorrett.android.personal_database_android.add_entity_activity_class";
+
+    private static final int REQUEST_TITLE = 0;
+    private static final String DIALOG_TITLE = "dialogTitle";
+
     private PDAEntityType mPDAEntityType;
     private String mPDAEntityIdentifier;
-    private RecyclerView mRecyclerView;
-    private PDAEntityAdapter mAdapter;
+
     private PDAEntity mPDAEntity;
     private List<PDAEntity> mChildPDAEntities;
 
-    public static PDAEntityListFragment newInstance( PDAEntityType entityType, @Nullable String entityIdentifier ) {
+    private RecyclerView mRecyclerView;
+    private PDAEntityAdapter mAdapter;
+
+
+    public static PDAEntityListFragment newInstance(
+            PDAEntityType entityType,
+            @Nullable String entityIdentifier) {
 
         Bundle args = new Bundle();
         args.putSerializable( ARG_ENTITY_TYPE, entityType );
@@ -59,6 +80,7 @@ public class PDAEntityListFragment extends Fragment {
 
         mPDAEntityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
         mPDAEntityIdentifier = getArguments().getString( ARG_ENTITY_IDENTIFIER );
+
         mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier);
         mChildPDAEntities = mPDAEntity.getChildEntites( getActivity() );
     }
@@ -85,10 +107,29 @@ public class PDAEntityListFragment extends Fragment {
         inflater.inflate( R.menu.fragment_pdaentity_list, menu );
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch ( item.getItemId() ) {
+
+            case R.id.fragment_pdaentity_list_add_entity:
+
+                EditTextDialogue.run( getActivity(), "new_database", "Database Name", new EditTextDialogue.OnClickListener() {
+
+                    @Override
+                    public void onOKClicked( String enteredText ) {
+                        Log.d( TAG, "text entered: " + enteredText );
+                    }
+                });
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected( item );
+
+        }
+    }
 
     private void updateUI() {
 
