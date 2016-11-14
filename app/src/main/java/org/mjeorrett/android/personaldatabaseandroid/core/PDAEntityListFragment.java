@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,6 +55,8 @@ public class PDAEntityListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu( true );
+
         mPDAEntityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
         mPDAEntityIdentifier = getArguments().getString( ARG_ENTITY_IDENTIFIER );
         mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier);
@@ -73,6 +78,17 @@ public class PDAEntityListFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate( R.menu.fragment_pdaentity_list, menu );
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void updateUI() {
 

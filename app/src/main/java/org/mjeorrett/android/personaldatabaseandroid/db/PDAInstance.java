@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class PDAInstance implements PDAEntity {
             String fullPath = dbInfo.second;
             int dbNameStartIndex = fullPath.lastIndexOf( '/' ) + 1;
             String dbFile = fullPath.substring( dbNameStartIndex );
+            dbFile = FilenameUtils.getBaseName( dbFile );
             result.add( dbFile );
         }
 

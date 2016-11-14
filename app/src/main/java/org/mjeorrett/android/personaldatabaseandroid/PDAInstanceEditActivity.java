@@ -1,5 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
@@ -18,5 +20,12 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
         Fragment fragment = PDAEntityListFragment.newInstance( PDAEntityType.INSTANCE, null );
         return fragment;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        this.setTitle( "Databases" );
     }
 }
