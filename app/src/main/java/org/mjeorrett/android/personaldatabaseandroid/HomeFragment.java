@@ -1,5 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,15 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate( R.layout.fragment_home, container, false );
 
         mEditStructureButton = (Button) view.findViewById( R.id.fragment_home_edit_structure_button );
+        mEditStructureButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick( View view ) {
+                Intent intent = new Intent( getActivity(), PDAInstanceEditActivity.class );
+                startActivity( intent );
+            }
+        });
+
         mEditDataButton = (Button) view.findViewById( R.id.fragment_home_edit_data_button );
 
         return view;
