@@ -18,6 +18,7 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityServer;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,17 +35,10 @@ public class PDAEntityListFragment extends Fragment {
     private static final String ARG_ENTITY_IDENTIFIER =
             "com.mjeorrett.android.personal_database_android.entity_identifier";
 
-    private static final String ARG_ADD_ENTITY_ACTIVITY_CLASS =
-            "com.mjeorrett.android.personal_database_android.add_entity_activity_class";
-
-    private static final int REQUEST_TITLE = 0;
-    private static final String DIALOG_TITLE = "dialogTitle";
-
     private PDAEntityType mPDAEntityType;
     private String mPDAEntityIdentifier;
 
     private PDAEntity mPDAEntity;
-    private List<PDAEntity> mChildPDAEntities;
 
     private RecyclerView mRecyclerView;
     private PDAEntityAdapter mAdapter;
@@ -74,7 +68,6 @@ public class PDAEntityListFragment extends Fragment {
         mPDAEntityIdentifier = getArguments().getString( ARG_ENTITY_IDENTIFIER );
 
         mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier);
-        mChildPDAEntities = mPDAEntity.getChildEntities();
     }
 
     @Nullable
@@ -88,7 +81,9 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        this.setUpUI();
+        mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier );
+        mAdapter = new PDAEntityAdapter( mPDAEntity.getChildEntities() );
+        mRecyclerView.setAdapter( mAdapter );
 
         return view;
     }
@@ -126,18 +121,9 @@ public class PDAEntityListFragment extends Fragment {
             public void onOKClicked( String enteredText ) {
 
                 mPDAEntity.createNewChildEntity( getActivity(), enteredText );
-                mAdapter.notifyDataSetChanged();
+                mAdapter.setEntities( mPDAEntity.getChildEntities() );
             }
         });
-    }
-
-    private void setUpUI() {
-
-        mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier );
-        mChildPDAEntities = mPDAEntity.getChildEntities();
-        mAdapter = new PDAEntityAdapter( mChildPDAEntities );
-        mRecyclerView.setAdapter( mAdapter );
-
     }
 
     private class PDAEntityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -162,7 +148,7 @@ public class PDAEntityListFragment extends Fragment {
 
         public PDAEntityAdapter( List<PDAEntity> pdaEntities ) {
 
-            mPDAEntities = pdaEntities;
+            mPDAEntities = new ArrayList<>( pdaEntities );
         }
 
         @Override
@@ -186,6 +172,13 @@ public class PDAEntityListFragment extends Fragment {
         public int getItemCount() {
 
             return mPDAEntities.size();
+        }
+
+        public void setEntities( List<PDAEntity> newEntities ) {
+
+            mPDAEntities.clear();
+            mPDAEntities.addAll( newEntities );
+            notifyDataSetChanged();
         }
     }
 

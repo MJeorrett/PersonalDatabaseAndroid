@@ -91,6 +91,22 @@ public class PDAInstance implements PDAEntity {
         return new ArrayList<PDAEntity>( mDatabases );
     }
 
+    @Override
+    public void createNewChildEntity( Context context, String title ) {
+
+        List<String> databaseNames = this.getUserDatabaseNames( context );
+
+        if ( databaseNames.contains( title ) ) {
+
+            Log.i( TAG, "User tried to duplicate database name so ignoring till I figure out something better to do");
+
+        } else {
+
+            PDADatabase newDatabase = new PDADatabase(context, title);
+            mDatabases.add( newDatabase );
+        }
+    }
+
     private void loadDatabases(Context context ) {
 
         mDatabases = new ArrayList<>();
@@ -103,12 +119,5 @@ public class PDAInstance implements PDAEntity {
                 mDatabases.add(database);
             }
         }
-    }
-
-    @Override
-    public void createNewChildEntity( Context context, String title ) {
-
-        PDADatabase newDatabase = new PDADatabase( context, title );
-        mDatabases.add( newDatabase );
     }
 }
