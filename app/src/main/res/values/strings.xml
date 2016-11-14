@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PersonalDatabaseAndroid</string>
+    <string name="fragment_home_edit_structure_button_text">Edit Structure</string>
+    <string name="fragment_home_edit_data_button_text">Edit Data</string>
+</resources>
