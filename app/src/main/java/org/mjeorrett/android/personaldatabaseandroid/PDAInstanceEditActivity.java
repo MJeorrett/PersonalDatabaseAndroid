@@ -14,7 +14,6 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
-
     @Override
     protected Fragment createFragment() {
 
