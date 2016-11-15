@@ -3,6 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
 import org.mjeorrett.android.personaldatabaseandroid.core.SingleFragmentActivity;
@@ -14,6 +15,10 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
+    private static final String FRAGMENT_KEY = "entityListFragment";
+
+    private Fragment mFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -24,16 +29,14 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
 
-        Fragment fragment =
-                PDAEntityListFragment.newInstance(
-                        PDAEntityType.INSTANCE,
-                        null,
-                        null,
-                        null,
-                        null,
-                        PDADatabaseEditActivity.class );
+        mFragment = PDAEntityListFragment.newInstance(
+                PDAEntityType.INSTANCE,
+                null,
+                null,
+                null,
+                null,
+                PDADatabaseEditActivity.class);
 
-        return fragment;
+        return mFragment;
     }
-
 }

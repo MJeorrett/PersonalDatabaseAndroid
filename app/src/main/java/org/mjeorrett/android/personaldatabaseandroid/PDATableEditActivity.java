@@ -3,6 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
@@ -15,39 +16,44 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDATableEditActivity extends DoubleFragmentActivity {
 
+    private static final String TOP_FRAGMENT_KEY = "top_fragment";
+    private static final String BOTTOM_FRAGMENT_KEY = "bottom_fragment";
+
+    private Fragment mTopFragment;
+    private Fragment mBottomFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         this.setTitle( "Edit Table");
     }
 
     @Override
     protected Fragment createTopFragment() {
 
-        Fragment fragment = PDATitleEditFragment.newInstance(
+        mTopFragment = PDATitleEditFragment.newInstance(
                 PDAEntityType.TABLE,
                 getDatabaseName(),
                 getTableName(),
-                null,
-                null
-        );
+                null);
 
-        return fragment;
+        return mTopFragment;
     }
 
     @Override
     protected Fragment createBottomFragment() {
 
-        Fragment fragment = PDAEntityListFragment.newInstance(
+        mBottomFragment = PDAEntityListFragment.newInstance(
                 PDAEntityType.TABLE,
                 getDatabaseName(),
                 getTableName(),
                 null,
                 null,
-                null
-        );
+                null);
 
-        return fragment;
+        return mBottomFragment;
     }
 
     private String getDatabaseName() {

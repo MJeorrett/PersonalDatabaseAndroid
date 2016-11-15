@@ -81,24 +81,14 @@ public class PDAEntityListFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu( true );
-        PDAEntityType entityType;
 
-        if ( savedInstanceState == null ) {
+        Bundle args = getArguments();
 
-            entityType = (PDAEntityType) getArguments().getSerializable(ARG_ENTITY_TYPE);
-            mDatabaseName = getArguments().getString(ARG_DATABASE_NAME);
-            mTableName = getArguments().getString(ARG_TABLE_NAME);
-            mColumnName = getArguments().getString(ARG_COLUMN_NAME);
-            mNextActivity = (Class) getArguments().getSerializable(ARG_NEXT_ACTVIITY);
-
-        } else {
-
-            entityType = (PDAEntityType) savedInstanceState.getSerializable(ARG_ENTITY_TYPE);
-            mDatabaseName = savedInstanceState.getString(ARG_DATABASE_NAME);
-            mTableName = savedInstanceState.getString(ARG_TABLE_NAME);
-            mColumnName = savedInstanceState.getString(ARG_COLUMN_NAME);
-            mNextActivity = (Class) savedInstanceState.getSerializable(ARG_NEXT_ACTVIITY);
-        }
+        PDAEntityType entityType = (PDAEntityType) args.getSerializable(ARG_ENTITY_TYPE);
+        mDatabaseName = args.getString(ARG_DATABASE_NAME);
+        mTableName = args.getString(ARG_TABLE_NAME);
+        mColumnName = args.getString(ARG_COLUMN_NAME);
+        mNextActivity = (Class) args.getSerializable(ARG_NEXT_ACTVIITY);
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
@@ -125,6 +115,39 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView.setAdapter( mAdapter );
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState( Bundle outState ) {
+
+        super.onSaveInstanceState( outState );
+        outState.putSerializable( ARG_ENTITY_TYPE, mEntity.getType() );
+        outState.putString( ARG_DATABASE_NAME, mDatabaseName );
+        outState.putString( ARG_TABLE_NAME, mTableName );
+        outState.putString( ARG_COLUMN_NAME, mColumnName );
+        outState.putSerializable( ARG_NEXT_ACTVIITY, mNextActivity );
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+
+        if ( savedInstanceState != null ) {
+
+            PDAEntityType entityType = (PDAEntityType) savedInstanceState.getSerializable( ARG_ENTITY_TYPE );
+            mDatabaseName = savedInstanceState.getString( ARG_DATABASE_NAME );
+            mTableName = savedInstanceState.getString( ARG_TABLE_NAME );
+            mColumnName = savedInstanceState.getString( ARG_COLUMN_NAME );
+
+            mEntity = PDAEntityServer.getPDAEntity(
+                    getActivity(),
+                    entityType,
+                    mDatabaseName,
+                    mTableName,
+                    mColumnName );
+        }
     }
 
     @Override
@@ -238,15 +261,4 @@ public class PDAEntityListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onSaveInstanceState( Bundle outState ) {
-
-        super.onSaveInstanceState( outState );
-        outState.putSerializable( ARG_ENTITY_TYPE, mEntity.getType() );
-        outState.putString( ARG_DATABASE_NAME, mDatabaseName );
-        outState.putString( ARG_TABLE_NAME, mTableName );
-        outState.putString( ARG_COLUMN_NAME, mColumnName );
-        outState.putSerializable( ARG_NEXT_ACTVIITY, mNextActivity );
-
-    }
 }

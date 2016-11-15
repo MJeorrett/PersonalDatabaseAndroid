@@ -31,16 +31,11 @@ public class PDATitleEditFragment extends Fragment {
             "com.mjeorrett.android.personal_database_android.table_name";
     private static final String ARG_COLUMN_NAME =
             "com.mjeorrett.android.personal_database_android.column_name";
-    private static final String ARG_ROW_ID =
-            "com.mjeorrett.android.personal_database_android.row_id";
-    private static final String ARG_NEXT_ACTVIITY =
-            "com.mjeorrett.android.personal_database_android.next_activity";
 
     private PDAEntity mEntity;
     private String mDatabaseName;
     private String mTableName;
     private String mColumnName;
-    private UUID mRowId;
 
     private Button mButton;
 
@@ -49,15 +44,13 @@ public class PDATitleEditFragment extends Fragment {
             PDAEntityType entityType,
             @Nullable String database,
             @Nullable String table,
-            @Nullable String column,
-            @Nullable UUID row_id ) {
+            @Nullable String column ) {
 
         Bundle args = new Bundle();
         args.putSerializable( ARG_ENTITY_TYPE, entityType );
         args.putString(ARG_DATABASE_NAME, database );
         args.putString(ARG_TABLE_NAME, table );
         args.putString(ARG_COLUMN_NAME, column );
-        args.putSerializable( ARG_ROW_ID, row_id );
 
         PDATitleEditFragment fragment = new PDATitleEditFragment();
         fragment.setArguments( args );
@@ -73,11 +66,10 @@ public class PDATitleEditFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        PDAEntityType entityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
-        mDatabaseName = args.getString( ARG_DATABASE_NAME );
-        mTableName = args.getString( ARG_TABLE_NAME );
-        mColumnName = args.getString( ARG_COLUMN_NAME );
-        mRowId = (UUID) args.getSerializable( ARG_ROW_ID );
+        PDAEntityType entityType = (PDAEntityType) args.getSerializable(ARG_ENTITY_TYPE);
+        mDatabaseName = args.getString(ARG_DATABASE_NAME);
+        mTableName = args.getString(ARG_TABLE_NAME);
+        mColumnName = args.getString(ARG_COLUMN_NAME);
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
@@ -85,6 +77,38 @@ public class PDATitleEditFragment extends Fragment {
                 mDatabaseName,
                 mTableName,
                 mColumnName );
+    }
+
+    @Override
+    public void onSaveInstanceState( Bundle outState ) {
+
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable( ARG_ENTITY_TYPE, mEntity.getType() );
+        outState.putString( ARG_DATABASE_NAME, mDatabaseName );
+        outState.putString( ARG_TABLE_NAME, mTableName );
+        outState.putString( ARG_COLUMN_NAME, mColumnName );
+    }
+
+    @Override
+    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
+
+        super.onActivityCreated(savedInstanceState);
+
+        if ( savedInstanceState != null ) {
+
+            PDAEntityType entityType = (PDAEntityType) savedInstanceState.getSerializable( ARG_ENTITY_TYPE );
+            mDatabaseName = savedInstanceState.getString( ARG_DATABASE_NAME );
+            mTableName = savedInstanceState.getString( ARG_TABLE_NAME );
+            mColumnName = savedInstanceState.getString( ARG_COLUMN_NAME );
+
+            mEntity = PDAEntityServer.getPDAEntity(
+                    getActivity(),
+                    entityType,
+                    mDatabaseName,
+                    mTableName,
+                    mColumnName );
+        }
     }
 
     @Nullable

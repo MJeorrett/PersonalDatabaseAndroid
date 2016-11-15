@@ -3,6 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
@@ -15,6 +16,12 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDADatabaseEditActivity extends DoubleFragmentActivity {
 
+    private static final String TOP_FRAGMENT_KEY = "top_fragment";
+    private static final String BOTTOM_FRAGMENT_KEY = "bottom_fragment";
+
+    private Fragment mTopFragment;
+    private Fragment mBottomFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -25,48 +32,29 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
     @Override
     protected Fragment createTopFragment() {
 
-        Fragment fragment;
+        mTopFragment = PDATitleEditFragment.newInstance(
+                PDAEntityType.DATABASE,
+                getDatabaseName(),
+                null,
+                null
+        );
 
-        if ( getIntent().getExtras() == null ) {
-
-            fragment = new PDATitleEditFragment();
-
-        } else {
-
-            fragment = PDATitleEditFragment.newInstance(
-                    PDAEntityType.DATABASE,
-                    getDatabaseName(),
-                    null,
-                    null,
-                    null
-            );
-        }
-
-        return fragment;
+        return mTopFragment;
     }
 
     @Override
     protected Fragment createBottomFragment() {
 
-        Fragment fragment;
+        mBottomFragment = PDAEntityListFragment.newInstance(
+                PDAEntityType.DATABASE,
+                getDatabaseName(),
+                null,
+                null,
+                null,
+                PDATableEditActivity.class
+        );
 
-        if ( getIntent().getExtras() == null ) {
-
-            fragment = new PDAEntityListFragment();
-
-        } else {
-
-            fragment = PDAEntityListFragment.newInstance(
-                    PDAEntityType.DATABASE,
-                    getDatabaseName(),
-                    null,
-                    null,
-                    null,
-                    PDATableEditActivity.class
-            );
-        }
-
-        return fragment;
+        return mBottomFragment;
     }
 
     private String getDatabaseName() {
@@ -76,5 +64,4 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
 
         return databaseName;
     }
-
 }
