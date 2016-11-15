@@ -25,13 +25,22 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
     @Override
     protected Fragment createTopFragment() {
 
-        Fragment fragment = PDATitleEditFragment.newInstance(
-                PDAEntityType.DATABASE,
-                getDatabaseName(),
-                null,
-                null,
-                null
-        );
+        Fragment fragment;
+
+        if ( getIntent().getExtras() == null ) {
+
+            fragment = new PDATitleEditFragment();
+
+        } else {
+
+            fragment = PDATitleEditFragment.newInstance(
+                    PDAEntityType.DATABASE,
+                    getDatabaseName(),
+                    null,
+                    null,
+                    null
+            );
+        }
 
         return fragment;
     }
@@ -39,14 +48,23 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
     @Override
     protected Fragment createBottomFragment() {
 
-        Fragment fragment = PDAEntityListFragment.newInstance(
-                PDAEntityType.DATABASE,
-                getDatabaseName(),
-                null,
-                null,
-                null,
-                null
-        );
+        Fragment fragment;
+
+        if ( getIntent().getExtras() == null ) {
+
+            fragment = new PDAEntityListFragment();
+
+        } else {
+
+            fragment = PDAEntityListFragment.newInstance(
+                    PDAEntityType.DATABASE,
+                    getDatabaseName(),
+                    null,
+                    null,
+                    null,
+                    PDATableEditActivity.class
+            );
+        }
 
         return fragment;
     }

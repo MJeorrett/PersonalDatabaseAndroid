@@ -27,6 +27,10 @@
             android:name=".PDADatabaseEditActivity"
             android:parentActivityName=".PDAInstanceEditActivity"/>
 
+        <activity
+            android:name=".PDATableEditActivity"
+            android:parentActivityName=".PDADatabaseEditActivity"/>
+
     </application>
 
 </manifest>

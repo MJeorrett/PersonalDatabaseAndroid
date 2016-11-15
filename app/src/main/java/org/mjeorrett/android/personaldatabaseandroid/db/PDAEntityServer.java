@@ -16,8 +16,7 @@ public class PDAEntityServer {
             PDAEntityType entityType,
             @Nullable String databaseName,
             @Nullable String tableName,
-            @Nullable String columnName,
-            @Nullable UUID rowId ) {
+            @Nullable String columnName ) {
 
         PDAEntity result = null;
 
@@ -30,6 +29,12 @@ public class PDAEntityServer {
             case DATABASE:
                 result = new PDADatabase( context, databaseName );
                 break;
+
+            case TABLE:
+                PDADatabase database = new PDADatabase( context, databaseName );
+                result = new PDATable( database, tableName );
+                break;
+
         }
 
         return result;

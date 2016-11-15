@@ -1,7 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,20 @@ public class PDATable implements PDAEntity {
 
     @Override
     public List<PDAEntity> getChildEntities() {
-        return null;
+
+        return new ArrayList<>( mColumns );
+    }
+
+    @Override
+    public String getChildTypeDescription() {
+
+        return "Column";
+    }
+
+    @Override
+    public PDAEntityType getType() {
+
+        return PDAEntityType.TABLE;
     }
 
     private List<String> columnNames() {
@@ -42,9 +54,18 @@ public class PDATable implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( String title) {
+    public void createNewChildEntity( String name ) {
 
-        Log.i( TAG, String.format( "createNewChildEntity( %s ) called.", title ) );
+        List<String> existingColumnNames = mDatabase.columnNamesForTable( mName );
+        String cleanColumnName = PDADbHelper.sanitizeSQLLiteIdentifier( name, existingColumnNames, TAG );
+
+        if ( cleanColumnName != null ) {
+
+            String query = "ALTER TABLE " + mName + " ADD COLUMN " + cleanColumnName + ";";
+            mDatabase.executeSql( query );
+            PDAColumn newColumn = new PDAColumn( this, cleanColumnName );
+            mColumns.add( newColumn );
+        }
     }
 
     private void loadColumns() {

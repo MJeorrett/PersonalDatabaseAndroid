@@ -26,8 +26,20 @@ public class PDAColumn implements PDAEntity {
     }
 
     @Override
+    public String getChildTypeDescription() {
+
+        return null;
+    }
+
+    @Override
     public List<PDAEntity> getChildEntities() {
         return null;
+    }
+
+    @Override
+    public PDAEntityType getType() {
+
+        return PDAEntityType.COLUMN;
     }
 
     @Override

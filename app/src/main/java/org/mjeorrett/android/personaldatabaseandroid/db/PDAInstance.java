@@ -35,9 +35,21 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Override
+    public String getChildTypeDescription() {
+
+        return "Database";
+    }
+
+    @Override
     public Intent putExtrasInIntent( Intent intent ) {
 
         return intent;
+    }
+
+    @Override
+    public PDAEntityType getType() {
+
+        return PDAEntityType.INSTANCE;
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,6 +49,18 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     }
 
     @Override
+    public String getChildTypeDescription() {
+
+        return "Table";
+    }
+
+    @Override
+    public PDAEntityType getType() {
+
+        return PDAEntityType.DATABASE;
+    }
+
+    @Override
     public Intent putExtrasInIntent(Intent intent) {
 
         intent.putExtra( PDAEntityType.DATABASE.getIntentKey(), mName );
@@ -56,20 +69,20 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( String title ) {
+    public void createNewChildEntity( String name ) {
 
         ArrayList<String> tableNames = (ArrayList<String>) tableNames();
 
-        String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( title, tableNames, TAG );
+        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( name, tableNames, TAG );
 
-        if ( cleanTitle != null ) {
+        if ( cleanName != null ) {
 
-            String sql = "CREATE TABLE " + title + " ( "
+            String sql = "CREATE TABLE " + name + " ( "
                     + "_id INTEGER primary key autoincrement, "
                     + " uuid )";
 
-            mDatabase.execSQL(sql);
-            PDATable newTable = new PDATable(this, title);
+            mDatabase.execSQL( sql );
+            PDATable newTable = new PDATable(this, cleanName);
             mTables.add(newTable);
         }
     }
@@ -115,14 +128,17 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     public List<String> columnNamesForTable(String tableName ) {
 
-        String[] queryArgs = { tableName };
-        Cursor cursor = mDatabase.rawQuery( "PRAGMA table_info( ? );", queryArgs );
-        PDACursorWrapper columnNamesCursor = new PDACursorWrapper( cursor );
-        List<String> columnNames = columnNamesCursor.getSingleColumnStringData();
+        Cursor cursor = mDatabase.query( tableName, null, null, null, null, null, null, "1" );
+        String[] columnNames = cursor.getColumnNames();
 
         cursor.close();
 
-        return columnNames;
+        return Arrays.asList( columnNames );
+    }
+
+    protected void executeSql( String sql ) {
+
+        mDatabase.execSQL( sql );
     }
 
     @Override

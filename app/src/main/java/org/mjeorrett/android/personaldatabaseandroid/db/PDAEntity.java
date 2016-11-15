@@ -14,5 +14,7 @@ public interface PDAEntity {
     List<PDAEntity> getChildEntities();
     Intent putExtrasInIntent( Intent intent );
     void createNewChildEntity( String title );
+    String getChildTypeDescription();
+    PDAEntityType getType();
 
 }

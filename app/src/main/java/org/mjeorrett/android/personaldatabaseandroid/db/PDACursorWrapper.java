@@ -53,6 +53,7 @@ public class PDACursorWrapper extends CursorWrapper {
 
             dataPoint = getString( 0 );
             results.add( dataPoint );
+            moveToNext();
         }
 
         return results;
