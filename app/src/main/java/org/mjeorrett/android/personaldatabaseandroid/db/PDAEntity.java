@@ -12,5 +12,6 @@ public interface PDAEntity {
 
     String getTitle();
     List<PDAEntity> getChildEntities();
-    void createNewChildEntity( Context context, String title );
+    void createNewChildEntity( String title );
+
 }

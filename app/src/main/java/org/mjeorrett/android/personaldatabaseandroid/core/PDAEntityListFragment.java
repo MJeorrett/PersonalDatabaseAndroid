@@ -120,7 +120,7 @@ public class PDAEntityListFragment extends Fragment {
             @Override
             public void onOKClicked( String enteredText ) {
 
-                mPDAEntity.createNewChildEntity( getActivity(), enteredText );
+                mPDAEntity.createNewChildEntity( enteredText );
                 mAdapter.setEntities( mPDAEntity.getChildEntities() );
             }
         });

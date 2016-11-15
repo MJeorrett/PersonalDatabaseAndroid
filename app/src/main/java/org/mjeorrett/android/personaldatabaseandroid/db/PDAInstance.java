@@ -25,10 +25,12 @@ public class PDAInstance implements PDAEntity {
     private static final String TITLE = "Instance";
 
     private List<PDADatabase> mDatabases;
+    private Context mAppContext;
 
     public PDAInstance( Context context ) {
 
-        this.loadDatabases( context );
+        mAppContext = context.getApplicationContext();
+        this.loadDatabases( mAppContext );
     }
 
     public String getTitle() {
@@ -37,10 +39,10 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Nullable
-    private List<String> getUserDatabaseNames( Context context ) {
+    private List<String> getUserDatabaseNames() {
 
-        PackageManager packageManager = context.getPackageManager();
-        String packageName = context.getPackageName();
+        PackageManager packageManager = mAppContext.getPackageManager();
+        String packageName = mAppContext.getPackageName();
         PackageInfo packageInfo = null;
 
         try {
@@ -92,9 +94,9 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( Context context, String title ) {
+    public void createNewChildEntity( String title ) {
 
-        List<String> databaseNames = this.getUserDatabaseNames( context );
+        List<String> databaseNames = this.getUserDatabaseNames();
 
         if ( databaseNames.contains( title ) ) {
 
@@ -102,15 +104,15 @@ public class PDAInstance implements PDAEntity {
 
         } else {
 
-            PDADatabase newDatabase = new PDADatabase(context, title);
+            PDADatabase newDatabase = new PDADatabase( mAppContext, title);
             mDatabases.add( newDatabase );
         }
     }
 
-    private void loadDatabases(Context context ) {
+    private void loadDatabases( Context context ) {
 
         mDatabases = new ArrayList<>();
-        List<String> databaseNames = this.getUserDatabaseNames( context );
+        List<String> databaseNames = this.getUserDatabaseNames();
 
         if ( databaseNames != null ) {
 
