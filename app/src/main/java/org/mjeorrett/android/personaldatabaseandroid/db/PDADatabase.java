@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,7 +34,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
         mAppContext = context.getApplicationContext();
 
 //        if the database does not exist this creates it and calls onCreate() in PDADatabaseHelper
-//        also calls 'onUpgrade if versions do not match
+//        also calls 'onUpgrade if versions is lower
         mDatabase = this.getWritableDatabase();
         this.loadTables();
     }
@@ -48,6 +49,14 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     public List<PDAEntity> getChildEntities() {
 
         return new ArrayList<>( mTables );
+    }
+
+    @Override
+    public Intent putExtrasInIntent(Intent intent) {
+
+        intent.putExtra( PDAEntityType.DATABASE.getIntentKey(), mName );
+
+        return intent;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -21,7 +21,6 @@ import java.util.List;
 public class PDAInstance implements PDAEntity {
 
     private static final String TAG = "PDAInstance";
-
     private static final String TITLE = "Instance";
 
     private List<PDADatabase> mDatabases;
@@ -36,6 +35,18 @@ public class PDAInstance implements PDAEntity {
     public String getTitle() {
 
         return TITLE;
+    }
+
+    @Override
+    public List<PDAEntity> getChildEntities() {
+
+        return new ArrayList<PDAEntity>( mDatabases );
+    }
+
+    @Override
+    public Intent putExtrasInIntent( Intent intent ) {
+
+        return intent;
     }
 
     @Nullable
@@ -85,12 +96,6 @@ public class PDAInstance implements PDAEntity {
         }
 
         return results;
-    }
-
-    @Override
-    public List<PDAEntity> getChildEntities() {
-
-        return new ArrayList<PDAEntity>( mDatabases );
     }
 
     @Override

@@ -1,9 +1,14 @@
 package org.mjeorrett.android.personaldatabaseandroid;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
+import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
+import org.mjeorrett.android.personaldatabaseandroid.core.PDATitleEditFragment;
+import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 /**
@@ -13,13 +18,47 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 public class PDADatabaseEditActivity extends DoubleFragmentActivity {
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        this.setTitle( "Edit Database" );
+    }
+
+    @Override
     protected Fragment createTopFragment() {
-        return null;
+
+        Fragment fragment = PDATitleEditFragment.newInstance(
+                PDAEntityType.DATABASE,
+                getDatabaseName(),
+                null,
+                null,
+                null
+        );
+
+        return fragment;
     }
 
     @Override
     protected Fragment createBottomFragment() {
-        return null;
+
+        Fragment fragment = PDAEntityListFragment.newInstance(
+                PDAEntityType.DATABASE,
+                getDatabaseName(),
+                null,
+                null,
+                null,
+                null
+        );
+
+        return fragment;
+    }
+
+    private String getDatabaseName() {
+
+        Bundle extras = getIntent().getExtras();
+        String databaseName = extras.getString( PDAEntityType.DATABASE.getIntentKey() );
+
+        return databaseName;
     }
 
 }

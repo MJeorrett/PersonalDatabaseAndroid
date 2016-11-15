@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.List;
@@ -39,4 +40,12 @@ public class PDATable implements PDAEntity {
         Log.i( TAG, String.format( "createNewChildEntity( %s ) called.", title ) );
     }
 
+    @Override
+    public Intent putExtrasInIntent(Intent intent) {
+
+        intent.putExtra( PDAEntityType.DATABASE.getIntentKey(), mDatabase.getTitle() );
+        intent.putExtra( PDAEntityType.TABLE.getIntentKey(), mName );
+
+        return intent;
+    }
 }

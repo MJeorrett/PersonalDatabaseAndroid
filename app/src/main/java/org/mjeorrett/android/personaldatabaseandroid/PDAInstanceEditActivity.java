@@ -15,6 +15,13 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        this.setTitle( "Databases" );
+    }
+
+    @Override
     protected Fragment createFragment() {
 
         Fragment fragment =
@@ -27,13 +34,6 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
                         PDADatabaseEditActivity.class );
 
         return fragment;
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        this.setTitle( "Databases" );
     }
 
 }

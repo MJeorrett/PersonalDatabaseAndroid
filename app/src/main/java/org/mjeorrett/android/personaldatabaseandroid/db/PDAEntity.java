@@ -1,6 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
-import android.content.Context;
+import android.content.Intent;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ public interface PDAEntity {
 
     String getTitle();
     List<PDAEntity> getChildEntities();
+    Intent putExtrasInIntent( Intent intent );
     void createNewChildEntity( String title );
 
 }

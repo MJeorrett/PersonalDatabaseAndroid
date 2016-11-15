@@ -1,5 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid.core;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,12 +47,12 @@ public class PDAEntityListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PDAEntityAdapter mAdapter;
 
-    PDAEntity mEntity;
-    String mDatabaseName;
-    String mTableName;
-    String mColumnName;
-    UUID mRowId;
-    Class mNextActivity;
+    private PDAEntity mEntity;
+    private String mDatabaseName;
+    private String mTableName;
+    private String mColumnName;
+    private UUID mRowId;
+    private Class mNextActivity;
 
     public static PDAEntityListFragment newInstance(
 
@@ -159,17 +160,30 @@ public class PDAEntityListFragment extends Fragment {
     private class PDAEntityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleTextView;
+        private PDAEntity mEntity;
 
         public PDAEntityHolder( View itemView ) {
 
             super(itemView);
             mTitleTextView = (TextView) itemView;
+            itemView.setOnClickListener( this );
         }
 
         @Override
         public void onClick(View view) {
 
+            Intent intent = new Intent( getActivity(), mNextActivity );
+            mEntity.putExtrasInIntent( intent );
+
+            startActivity( intent );
         }
+
+        public void bindPDAEntity( PDAEntity entity ) {
+
+            mTitleTextView.setText( entity.getTitle() );
+            mEntity = entity;
+        }
+
     }
 
     private class PDAEntityAdapter extends RecyclerView.Adapter<PDAEntityHolder> {
@@ -195,7 +209,7 @@ public class PDAEntityListFragment extends Fragment {
         public void onBindViewHolder(PDAEntityHolder holder, int position) {
 
             PDAEntity entity = mPDAEntities.get( position );
-            holder.mTitleTextView.setText( entity.getTitle() );
+            holder.bindPDAEntity( entity );
         }
 
         @Override

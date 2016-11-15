@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.mjeorrett.android.personaldatabaseandroid.R;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
@@ -36,11 +37,13 @@ public class PDATitleEditFragment extends Fragment {
     private static final String ARG_NEXT_ACTVIITY =
             "com.mjeorrett.android.personal_database_android.next_activity";
 
-    PDAEntity mEntity;
-    String mDatabaseName;
-    String mTableName;
-    String mColumnName;
-    UUID mRowId;
+    private PDAEntity mEntity;
+    private String mDatabaseName;
+    private String mTableName;
+    private String mColumnName;
+    private UUID mRowId;
+
+    private Button mButton;
 
     public static PDATitleEditFragment newInstance(
 
@@ -69,11 +72,13 @@ public class PDATitleEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu( true );
 
-        PDAEntityType entityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
-        mDatabaseName = getArguments().getString( ARG_DATABASE_NAME );
-        mTableName = getArguments().getString( ARG_TABLE_NAME );
-        mColumnName = getArguments().getString( ARG_COLUMN_NAME );
-        mRowId = (UUID) getArguments().getSerializable( ARG_ROW_ID );
+        Bundle args = getArguments();
+
+        PDAEntityType entityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
+        mDatabaseName = args.getString( ARG_DATABASE_NAME );
+        mTableName = args.getString( ARG_TABLE_NAME );
+        mColumnName = args.getString( ARG_COLUMN_NAME );
+        mRowId = (UUID) args.getSerializable( ARG_ROW_ID );
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
@@ -92,6 +97,10 @@ public class PDATitleEditFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate( R.layout.fragment_title_display, container, false );
+
+        mButton = (Button) view.findViewById( R.id.fragment_title_display_button );
+        mButton.setText( mEntity.getTitle() );
+
         return view;
     }
 }
