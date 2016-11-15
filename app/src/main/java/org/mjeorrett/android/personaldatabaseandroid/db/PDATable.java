@@ -3,6 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 import android.content.Intent;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +16,13 @@ public class PDATable implements PDAEntity {
 
     private String mName;
     private PDADatabase mDatabase;
+    private ArrayList<PDAEntity> mColumns;
 
     PDATable( PDADatabase database, String name ) {
 
         mDatabase = database;
         mName = name;
+        this.loadColumns();
     }
 
     @Override
@@ -30,14 +33,30 @@ public class PDATable implements PDAEntity {
 
     @Override
     public List<PDAEntity> getChildEntities() {
-
         return null;
+    }
+
+    private List<String> columnNames() {
+
+        return mDatabase.columnNamesForTable( mName );
     }
 
     @Override
     public void createNewChildEntity( String title) {
 
         Log.i( TAG, String.format( "createNewChildEntity( %s ) called.", title ) );
+    }
+
+    private void loadColumns() {
+
+        mColumns = new ArrayList<>();
+        PDAColumn aColumn;
+
+        for ( String columnName : this.columnNames() ) {
+
+            aColumn = new PDAColumn( this, columnName );
+            mColumns.add( aColumn );
+        }
     }
 
     @Override

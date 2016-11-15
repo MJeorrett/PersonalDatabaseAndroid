@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -103,18 +104,25 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
         String[] columns = { "name" };
         PDACursorWrapper tableNamesCursor = this.queryTableWhere( "sqlite_master", columns, null, null );
-        ArrayList<String> tableNames = new ArrayList<>();
-        String aTableName;
+        List<String> tableNames;
 
-        tableNamesCursor.moveToFirst();
-        while ( !tableNamesCursor.isAfterLast() ) {
+        tableNames = tableNamesCursor.getSingleColumnStringData();
 
-            aTableName = tableNamesCursor.getSingleStringColumn();
-            tableNames.add( aTableName );
-            tableNamesCursor.moveToNext();
-        }
+        tableNamesCursor.close();
 
         return tableNames;
+    }
+
+    public List<String> columnNamesForTable(String tableName ) {
+
+        String[] queryArgs = { tableName };
+        Cursor cursor = mDatabase.rawQuery( "PRAGMA table_info( ? );", queryArgs );
+        PDACursorWrapper columnNamesCursor = new PDACursorWrapper( cursor );
+        List<String> columnNames = columnNamesCursor.getSingleColumnStringData();
+
+        cursor.close();
+
+        return columnNames;
     }
 
     @Override

@@ -3,7 +3,9 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by user on 15/11/2016.
@@ -16,23 +18,43 @@ public class PDACursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
-    public HashMap<String, String> getStringData() {
+    public List<HashMap<String, String>> getStringData() {
 
-        HashMap<String, String> row = new HashMap<>();
+        List<HashMap<String, String>> results = new ArrayList<>();
+        HashMap<String, String> row;
         String dataPoint;
+        moveToFirst();
 
-        for ( String columnName : this.getColumnNames() ) {
+        while ( !isAfterLast() ) {
 
-            dataPoint = getString( getColumnIndex( columnName ) );
-            row.put( columnName, dataPoint );
+            row = new HashMap<>();
+
+            for (String columnName : this.getColumnNames()) {
+
+                dataPoint = getString(getColumnIndex(columnName));
+                row.put(columnName, dataPoint);
+            }
+
+            results.add( row );
+            moveToNext();
         }
 
-        return row;
+        return results;
     }
 
-    public String getSingleStringColumn() {
+    public List<String> getSingleColumnStringData() {
 
-        String dataPoint = getString( 0 );
-        return dataPoint;
+        List<String> results = new ArrayList<>();
+        String dataPoint;
+
+        moveToFirst();
+
+        while ( !isAfterLast() ) {
+
+            dataPoint = getString( 0 );
+            results.add( dataPoint );
+        }
+
+        return results;
     }
 }
