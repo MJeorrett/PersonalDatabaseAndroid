@@ -18,7 +18,13 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
 
         Fragment fragment =
-                PDAEntityListFragment.newInstance( PDAEntityType.INSTANCE, null, null, null, null );
+                PDAEntityListFragment.newInstance(
+                        PDAEntityType.INSTANCE,
+                        null,
+                        null,
+                        null,
+                        null,
+                        PDADatabaseEditActivity.class );
 
         return fragment;
     }

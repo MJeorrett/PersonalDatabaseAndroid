@@ -14,8 +14,6 @@ import org.mjeorrett.android.personaldatabaseandroid.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
-
-
     protected abstract Fragment createFragment();
 
     @Override
@@ -25,13 +23,13 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         setContentView( R.layout.activity_single_fragment );
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById( R.id.fragment_container_1 );
+        Fragment fragment = fragmentManager.findFragmentById( R.id.activity_single_fragment_container );
 
         if ( fragment == null ) {
 
             fragment = createFragment();
             fragmentManager.beginTransaction()
-                    .add( R.id.fragment_container_1, fragment )
+                    .add( R.id.activity_single_fragment_container, fragment )
                     .commit();
         }
     }

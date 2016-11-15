@@ -32,34 +32,35 @@ public class PDAEntityListFragment extends Fragment {
 
     private static final String ARG_ENTITY_TYPE =
             "com.mjeorrett.android.personal_database_android.entity_type";
-
     private static final String ARG_DATABASE_NAME =
-            "com.mjeorrett.android.personal_database_android.entity_identifier";
+            "com.mjeorrett.android.personal_database_android.database_name";
     private static final String ARG_TABLE_NAME =
-            "com.mjeorrett.android.personal_database_android.entity_identifier";
+            "com.mjeorrett.android.personal_database_android.table_name";
     private static final String ARG_COLUMN_NAME =
-            "com.mjeorrett.android.personal_database_android.entity_identifier";
+            "com.mjeorrett.android.personal_database_android.column_name";
     private static final String ARG_ROW_ID =
-            "com.mjeorrett.android.personal_database_android.entity_identifier";
-
-    private PDAEntityType mPDAEntityType;
-    private String mDatabaseName;
-    private String mTableName;
-    private String mColumnName;
-    private UUID mRowId;
-
-    private PDAEntity mPDAEntity;
+            "com.mjeorrett.android.personal_database_android.row_id";
+    private static final String ARG_NEXT_ACTVIITY =
+            "com.mjeorrett.android.personal_database_android.next_activity";
 
     private RecyclerView mRecyclerView;
     private PDAEntityAdapter mAdapter;
 
+    PDAEntity mEntity;
+    String mDatabaseName;
+    String mTableName;
+    String mColumnName;
+    UUID mRowId;
+    Class mNextActivity;
 
     public static PDAEntityListFragment newInstance(
+
             PDAEntityType entityType,
             @Nullable String database,
             @Nullable String table,
             @Nullable String column,
-            @Nullable UUID row_id ) {
+            @Nullable UUID row_id,
+            @Nullable Class nextActivity ) {
 
         Bundle args = new Bundle();
         args.putSerializable( ARG_ENTITY_TYPE, entityType );
@@ -67,6 +68,7 @@ public class PDAEntityListFragment extends Fragment {
         args.putString(ARG_TABLE_NAME, table );
         args.putString(ARG_COLUMN_NAME, column );
         args.putSerializable( ARG_ROW_ID, row_id );
+        args.putSerializable( ARG_NEXT_ACTVIITY, nextActivity );
 
         PDAEntityListFragment fragment = new PDAEntityListFragment();
         fragment.setArguments( args );
@@ -80,19 +82,21 @@ public class PDAEntityListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu( true );
 
-        mPDAEntityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
+        PDAEntityType entityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
         mDatabaseName = getArguments().getString( ARG_DATABASE_NAME );
         mTableName = getArguments().getString( ARG_TABLE_NAME );
         mColumnName = getArguments().getString( ARG_COLUMN_NAME );
         mRowId = (UUID) getArguments().getSerializable( ARG_ROW_ID );
 
-        mPDAEntity = PDAEntityServer.getPDAEntity(
+        mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
-                mPDAEntityType,
+                entityType,
                 mDatabaseName,
                 mTableName,
                 mColumnName,
                 mRowId );
+
+        mNextActivity = (Class) getArguments().getSerializable( ARG_NEXT_ACTVIITY );
     }
 
     @Nullable
@@ -107,7 +111,7 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        mAdapter = new PDAEntityAdapter( mPDAEntity.getChildEntities() );
+        mAdapter = new PDAEntityAdapter( mEntity.getChildEntities() );
         mRecyclerView.setAdapter( mAdapter );
 
         return view;
@@ -115,6 +119,7 @@ public class PDAEntityListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate( R.menu.fragment_pdaentity_list, menu );
     }
@@ -145,8 +150,8 @@ public class PDAEntityListFragment extends Fragment {
             @Override
             public void onOKClicked( String enteredText ) {
 
-                mPDAEntity.createNewChildEntity( enteredText );
-                mAdapter.setEntities( mPDAEntity.getChildEntities() );
+                mEntity.createNewChildEntity( enteredText );
+                mAdapter.setEntities( mEntity.getChildEntities() );
             }
         });
     }
