@@ -61,8 +61,8 @@ public class PDAInstance implements PDAEntity {
 
         if ( cleanTitle != null ) {
 
-            PDADatabase newDatabase = new PDADatabase(mAppContext, title);
-            mDatabases.add(newDatabase);
+            PDADatabase newDatabase = new PDADatabase( mAppContext, cleanTitle );
+            mDatabases.add( newDatabase );
         }
     }
 

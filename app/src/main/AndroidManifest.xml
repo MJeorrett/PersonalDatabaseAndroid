@@ -20,16 +20,13 @@
         </activity>
 
         <activity
-            android:name=".PDAInstanceEditActivity"
-            android:parentActivityName=".HomeActivity"/>
+            android:name=".PDAInstanceEditActivity"/>
 
         <activity
-            android:name=".PDADatabaseEditActivity"
-            android:parentActivityName=".PDAInstanceEditActivity"/>
+            android:name=".PDADatabaseEditActivity"/>
 
         <activity
-            android:name=".PDATableEditActivity"
-            android:parentActivityName=".PDADatabaseEditActivity"/>
+            android:name=".PDATableEditActivity"/>
 
     </application>
 

@@ -77,12 +77,12 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
         if ( cleanName != null ) {
 
-            String sql = "CREATE TABLE " + name + " ( "
+            String sql = "CREATE TABLE " + cleanName + " ( "
                     + "_id INTEGER primary key autoincrement, "
                     + " uuid )";
 
             mDatabase.execSQL( sql );
-            PDATable newTable = new PDATable(this, cleanName);
+            PDATable newTable = new PDATable( this, cleanName );
             mTables.add(newTable);
         }
     }
