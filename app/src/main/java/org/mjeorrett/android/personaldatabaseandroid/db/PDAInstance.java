@@ -103,19 +103,13 @@ public class PDAInstance implements PDAEntity {
 
         List<String> databaseNames = this.getUserDatabaseNames();
 
-        if ( databaseNames != null && databaseNames.contains( title ) ) {
+        String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( title, databaseNames, TAG );
 
-            Log.i( TAG, "User tried to duplicate database name so ignoring till I figure out something better to do");
-            return;
+        if ( cleanTitle != null ) {
+
+            PDADatabase newDatabase = new PDADatabase(mAppContext, title);
+            mDatabases.add(newDatabase);
         }
-
-        if ( title.equals( "" ) ) {
-            Log.i( TAG, "User tried to create database with no name so ignoring till I figure out something better to do");
-            return;
-        }
-
-        PDADatabase newDatabase = new PDADatabase( mAppContext, title);
-        mDatabases.add( newDatabase );
     }
 
     private void loadDatabases( Context context ) {

@@ -64,18 +64,30 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
         ArrayList<String> tableNames = (ArrayList<String>) tableNames();
 
-        if ( !tableNames.contains( title ) ) {
+        String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( title, tableNames, TAG );
 
-            String sql = "CREATE TABLE " + title + " ();";
-            mDatabase.execSQL( sql );
-            PDATable newTable = new PDATable( this, title );
+        if ( cleanTitle != null ) {
+
+            String sql = "CREATE TABLE " + title + " ( "
+                    + "_id INTEGER primary key autoincrement, "
+                    + " uuid )";
+
+            mDatabase.execSQL(sql);
+            PDATable newTable = new PDATable(this, title);
+            mTables.add(newTable);
         }
-
     }
 
     private void loadTables() {
 
         mTables = new ArrayList<>();
+        PDATable newTable;
+
+        for ( String tableName : tableNames() ) {
+
+            newTable = new PDATable( this, tableName );
+            mTables.add( newTable );
+        }
     }
 
     private PDACursorWrapper queryTableWhere( String tableName, String[] columns, String whereClause, String[] whereArgs ) {
@@ -104,6 +116,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
             aTableName = tableNamesCursor.getSingleStringColumn();
             tableNames.add( aTableName );
+            tableNamesCursor.moveToNext();
         }
 
         return tableNames;

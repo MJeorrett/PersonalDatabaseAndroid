@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,8 +16,8 @@ public class PDATable implements PDAEntity {
 
     private static final String TAG = "PDATable";
 
-    private PDADatabase mDatabase;
     private String mName;
+    private PDADatabase mDatabase;
 
     PDATable( PDADatabase database, String name ) {
 

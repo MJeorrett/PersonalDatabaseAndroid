@@ -2,6 +2,7 @@ package org.mjeorrett.android.personaldatabaseandroid.core;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -21,13 +22,24 @@ public class EditTextDialogue extends DialogFragment {
         void onOKClicked( String enteredText );
     }
 
-    public static void run(Context context, String initialText, String title, final OnClickListener listener ) {
+    public static void run(
+            Context context,
+            String title,
+            String hint,
+            @Nullable String initialText,
+            final OnClickListener listener ) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( context );
         builder.setTitle( title );
 
         final EditText editText = new EditText( context );
-        editText.setText( initialText );
+        editText.setHint( hint );
+
+        if ( initialText != null ) {
+
+            editText.setText(initialText);
+        }
+
         editText.setInputType( InputType.TYPE_CLASS_TEXT );
         builder.setView( editText );
 

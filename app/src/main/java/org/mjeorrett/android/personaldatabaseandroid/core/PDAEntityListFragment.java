@@ -142,10 +142,13 @@ public class PDAEntityListFragment extends Fragment {
 
     private void createNewChildEntity() {
 
+        String entityType = mEntity.getTitle();
+
         EditTextDialogue.run(
                 getActivity(),
-                "new_database",
-                "Database Name",
+                "New " + entityType,
+                "enter name",
+                null,
                 new EditTextDialogue.OnClickListener() {
 
             @Override
