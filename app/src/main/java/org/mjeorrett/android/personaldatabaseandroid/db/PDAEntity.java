@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PDAEntity {
 
-    String getTitle();
+    String getName();
     List<PDAEntity> getChildEntities();
     Intent putExtrasInIntent( Intent intent );
     void createNewChildEntity( String title );

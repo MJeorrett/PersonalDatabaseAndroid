@@ -3,9 +3,7 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by user on 15/11/2016.

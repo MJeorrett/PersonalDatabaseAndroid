@@ -3,10 +3,8 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +16,17 @@ import java.util.List;
 public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     private static final String TAG = "PDADatabase";
-
     private static final int VERSION = 1;
 
     private String mName;
     private SQLiteDatabase mDatabase;
     private List<PDAEntity> mTables;
-    private Context mAppContext;
 
     PDADatabase( Context context, String name ) {
 
         super( context, name + ".db", null, VERSION );
 
         mName = name;
-        mAppContext = context.getApplicationContext();
 
 //        if the database does not exist this creates it and calls onCreate() in PDADatabaseHelper
 //        also calls 'onUpgrade if versions is lower
@@ -40,7 +35,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
 
         return mName;
     }
@@ -124,7 +119,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     @Override
     public void onCreate( SQLiteDatabase sqLiteDatabase ) {
-//        intentionally left blank as all user databases will be created empty
+//        intentionally left blank ( all user databases will be created empty )
     }
 
     @Override

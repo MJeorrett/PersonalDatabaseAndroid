@@ -20,7 +20,7 @@ public class PDAColumn implements PDAEntity {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
 
         return mName;
     }

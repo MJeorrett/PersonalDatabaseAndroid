@@ -1,11 +1,8 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,13 +23,14 @@ public class PDATable implements PDAEntity {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
 
         return mName;
     }
 
     @Override
     public List<PDAEntity> getChildEntities() {
+
         return null;
     }
 
@@ -45,7 +43,7 @@ public class PDATable implements PDAEntity {
     @Override
     public Intent putExtrasInIntent(Intent intent) {
 
-        intent.putExtra( PDAEntityType.DATABASE.getIntentKey(), mDatabase.getTitle() );
+        intent.putExtra( PDAEntityType.DATABASE.getIntentKey(), mDatabase.getName() );
         intent.putExtra( PDAEntityType.TABLE.getIntentKey(), mName );
 
         return intent;

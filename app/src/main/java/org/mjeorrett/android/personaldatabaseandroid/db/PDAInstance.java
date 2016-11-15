@@ -2,15 +2,6 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.support.annotation.Nullable;
-import android.util.Log;
-
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +23,7 @@ public class PDAInstance implements PDAEntity {
         this.loadDatabases( mAppContext );
     }
 
-    public String getTitle() {
+    public String getName() {
 
         return TITLE;
     }
@@ -49,59 +40,10 @@ public class PDAInstance implements PDAEntity {
         return intent;
     }
 
-    @Nullable
-    private List<String> getUserDatabaseNames() {
-
-        PackageManager packageManager = mAppContext.getPackageManager();
-        String packageName = mAppContext.getPackageName();
-        PackageInfo packageInfo = null;
-
-        try {
-            packageInfo = packageManager.getPackageInfo(packageName, 0);
-        } catch ( PackageManager.NameNotFoundException ex ) {
-            Log.w( TAG, "Error package name not found ", ex );
-        }
-
-        List<String> results = null;
-
-        if (packageInfo != null ) {
-
-            String dataDirectory = packageInfo.applicationInfo.dataDir;
-            String databasesPath = dataDirectory + "/databases";
-
-            results = new ArrayList<>();
-
-            File dir = new File( databasesPath );
-            File[] databaseFiles = dir.listFiles( new FilenameFilter() {
-
-                @Override
-                public boolean accept( File dir, String name ) {
-
-                    return name.endsWith(".db");
-                }
-            });
-
-            if ( databaseFiles != null ) {
-
-                for (File databaseFile : databaseFiles) {
-
-                    String fullPath = databaseFile.getPath();
-                    int dbNameStartIndex = fullPath.lastIndexOf('/') + 1;
-                    String dbFile = fullPath.substring(dbNameStartIndex);
-                    dbFile = FilenameUtils.getBaseName(dbFile);
-
-                    results.add(dbFile);
-                }
-            }
-        }
-
-        return results;
-    }
-
     @Override
     public void createNewChildEntity( String title ) {
 
-        List<String> databaseNames = this.getUserDatabaseNames();
+        List<String> databaseNames = PDADbHelper.getUserDatabaseNames( mAppContext );
 
         String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( title, databaseNames, TAG );
 
@@ -115,7 +57,7 @@ public class PDAInstance implements PDAEntity {
     private void loadDatabases( Context context ) {
 
         mDatabases = new ArrayList<>();
-        List<String> databaseNames = this.getUserDatabaseNames();
+        List<String> databaseNames = PDADbHelper.getUserDatabaseNames( mAppContext );
 
         if ( databaseNames != null ) {
 

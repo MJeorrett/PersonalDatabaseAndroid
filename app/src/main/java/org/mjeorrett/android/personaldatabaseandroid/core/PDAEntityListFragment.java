@@ -142,7 +142,7 @@ public class PDAEntityListFragment extends Fragment {
 
     private void createNewChildEntity() {
 
-        String entityType = mEntity.getTitle();
+        String entityType = mEntity.getName();
 
         EditTextDialogue.run(
                 getActivity(),
@@ -183,7 +183,7 @@ public class PDAEntityListFragment extends Fragment {
 
         public void bindPDAEntity( PDAEntity entity ) {
 
-            mTitleTextView.setText( entity.getTitle() );
+            mTitleTextView.setText( entity.getName() );
             mEntity = entity;
         }
 
