@@ -17,7 +17,9 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
 
-        Fragment fragment = PDAEntityListFragment.newInstance( PDAEntityType.INSTANCE, null );
+        Fragment fragment =
+                PDAEntityListFragment.newInstance( PDAEntityType.INSTANCE, null, null, null, null );
+
         return fragment;
     }
 

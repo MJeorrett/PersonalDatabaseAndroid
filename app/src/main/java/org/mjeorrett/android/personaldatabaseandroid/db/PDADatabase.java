@@ -1,10 +1,13 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +22,10 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     private String mName;
     private SQLiteDatabase mDatabase;
+    private List<PDAEntity> mTables;
     private Context mAppContext;
 
-    public PDADatabase( Context context, String name ) {
+    PDADatabase( Context context, String name ) {
 
         super( context, name + ".db", null, VERSION );
 
@@ -31,6 +35,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 //        if the database does not exist this creates it and calls onCreate() in PDADatabaseHelper
 //        also calls 'onUpgrade if versions do not match
         mDatabase = this.getWritableDatabase();
+        this.loadTables();
     }
 
     @Override
@@ -42,18 +47,57 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     @Override
     public List<PDAEntity> getChildEntities() {
 
-        return null;
+        return new ArrayList<>( mTables );
     }
 
     @Override
     public void createNewChildEntity( String title ) {
 
-        Log.i( TAG, String.format( "createNewChildEntity( %s ) called", title ) );
+        ArrayList<String> tableNames = (ArrayList<String>) tableNames();
+
+        if ( !tableNames.contains( title ) ) {
+
+            String sql = "CREATE TABLE " + title + " ();";
+            mDatabase.execSQL( sql );
+            PDATable newTable = new PDATable( this, title );
+        }
+
     }
 
-    public SQLiteDatabase exec() {
+    private void loadTables() {
 
-        return  mDatabase;
+        mTables = new ArrayList<>();
+    }
+
+    private PDACursorWrapper queryTableWhere( String tableName, String[] columns, String whereClause, String[] whereArgs ) {
+
+        Cursor cursor = mDatabase.query(
+                tableName,
+                columns,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null );
+
+        return new PDACursorWrapper( cursor );
+    }
+
+    public List<String> tableNames() {
+
+        String[] columns = { "name" };
+        PDACursorWrapper tableNamesCursor = this.queryTableWhere( "sqlite_master", columns, null, null );
+        ArrayList<String> tableNames = new ArrayList<>();
+        String aTableName;
+
+        tableNamesCursor.moveToFirst();
+        while ( !tableNamesCursor.isAfterLast() ) {
+
+            aTableName = tableNamesCursor.getSingleStringColumn();
+            tableNames.add( aTableName );
+        }
+
+        return tableNames;
     }
 
     @Override

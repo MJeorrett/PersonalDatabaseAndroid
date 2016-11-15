@@ -1,6 +1,9 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
+
+import java.util.UUID;
 
 /**
  * Created by user on 14/11/2016.
@@ -8,7 +11,13 @@ import android.content.Context;
 
 public class PDAEntityServer {
 
-    public static PDAEntity getPDAEntity( Context context, PDAEntityType entityType, String identifier ) {
+    public static PDAEntity getPDAEntity(
+            Context context,
+            PDAEntityType entityType,
+            @Nullable String databaseName,
+            @Nullable String tableName,
+            @Nullable String columnName,
+            @Nullable UUID rowId ) {
 
         PDAEntity result = null;
 
@@ -19,7 +28,7 @@ public class PDAEntityServer {
                 break;
 
             case DATABASE:
-                result = new PDADatabase( context, identifier );
+                result = new PDADatabase( context, databaseName );
                 break;
         }
 

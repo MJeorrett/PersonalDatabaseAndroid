@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 
@@ -10,9 +11,21 @@ import java.util.List;
 
 public class PDATable implements PDAEntity {
 
+    private static final String TAG = "PDATable";
+
+    private PDADatabase mDatabase;
+    private String mName;
+
+    PDATable( PDADatabase database, String name ) {
+
+        mDatabase = database;
+        mName = name;
+    }
+
     @Override
     public String getTitle() {
-        return null;
+
+        return mName;
     }
 
     @Override
@@ -23,6 +36,7 @@ public class PDATable implements PDAEntity {
     @Override
     public void createNewChildEntity( String title) {
 
+        Log.i( TAG, String.format( "createNewChildEntity( %s ) called.", title ) );
     }
 
 }

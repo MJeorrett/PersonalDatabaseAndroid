@@ -27,7 +27,7 @@ public class PDAInstance implements PDAEntity {
     private List<PDADatabase> mDatabases;
     private Context mAppContext;
 
-    public PDAInstance( Context context ) {
+    PDAInstance(Context context) {
 
         mAppContext = context.getApplicationContext();
         this.loadDatabases( mAppContext );
@@ -98,15 +98,19 @@ public class PDAInstance implements PDAEntity {
 
         List<String> databaseNames = this.getUserDatabaseNames();
 
-        if ( databaseNames.contains( title ) ) {
+        if ( databaseNames != null && databaseNames.contains( title ) ) {
 
             Log.i( TAG, "User tried to duplicate database name so ignoring till I figure out something better to do");
-
-        } else {
-
-            PDADatabase newDatabase = new PDADatabase( mAppContext, title);
-            mDatabases.add( newDatabase );
+            return;
         }
+
+        if ( title.equals( "" ) ) {
+            Log.i( TAG, "User tried to create database with no name so ignoring till I figure out something better to do");
+            return;
+        }
+
+        PDADatabase newDatabase = new PDADatabase( mAppContext, title);
+        mDatabases.add( newDatabase );
     }
 
     private void loadDatabases( Context context ) {

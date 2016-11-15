@@ -20,6 +20,7 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by user on 14/11/2016.
@@ -32,11 +33,20 @@ public class PDAEntityListFragment extends Fragment {
     private static final String ARG_ENTITY_TYPE =
             "com.mjeorrett.android.personal_database_android.entity_type";
 
-    private static final String ARG_ENTITY_IDENTIFIER =
+    private static final String ARG_DATABASE_NAME =
+            "com.mjeorrett.android.personal_database_android.entity_identifier";
+    private static final String ARG_TABLE_NAME =
+            "com.mjeorrett.android.personal_database_android.entity_identifier";
+    private static final String ARG_COLUMN_NAME =
+            "com.mjeorrett.android.personal_database_android.entity_identifier";
+    private static final String ARG_ROW_ID =
             "com.mjeorrett.android.personal_database_android.entity_identifier";
 
     private PDAEntityType mPDAEntityType;
-    private String mPDAEntityIdentifier;
+    private String mDatabaseName;
+    private String mTableName;
+    private String mColumnName;
+    private UUID mRowId;
 
     private PDAEntity mPDAEntity;
 
@@ -46,11 +56,17 @@ public class PDAEntityListFragment extends Fragment {
 
     public static PDAEntityListFragment newInstance(
             PDAEntityType entityType,
-            @Nullable String entityIdentifier) {
+            @Nullable String database,
+            @Nullable String table,
+            @Nullable String column,
+            @Nullable UUID row_id ) {
 
         Bundle args = new Bundle();
         args.putSerializable( ARG_ENTITY_TYPE, entityType );
-        args.putString( ARG_ENTITY_IDENTIFIER, entityIdentifier );
+        args.putString(ARG_DATABASE_NAME, database );
+        args.putString(ARG_TABLE_NAME, table );
+        args.putString(ARG_COLUMN_NAME, column );
+        args.putSerializable( ARG_ROW_ID, row_id );
 
         PDAEntityListFragment fragment = new PDAEntityListFragment();
         fragment.setArguments( args );
@@ -65,9 +81,18 @@ public class PDAEntityListFragment extends Fragment {
         setHasOptionsMenu( true );
 
         mPDAEntityType = (PDAEntityType) getArguments().getSerializable( ARG_ENTITY_TYPE );
-        mPDAEntityIdentifier = getArguments().getString( ARG_ENTITY_IDENTIFIER );
+        mDatabaseName = getArguments().getString( ARG_DATABASE_NAME );
+        mTableName = getArguments().getString( ARG_TABLE_NAME );
+        mColumnName = getArguments().getString( ARG_COLUMN_NAME );
+        mRowId = (UUID) getArguments().getSerializable( ARG_ROW_ID );
 
-        mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier);
+        mPDAEntity = PDAEntityServer.getPDAEntity(
+                getActivity(),
+                mPDAEntityType,
+                mDatabaseName,
+                mTableName,
+                mColumnName,
+                mRowId );
     }
 
     @Nullable
@@ -78,10 +103,10 @@ public class PDAEntityListFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate( R.layout.fragment_pdaentity_list, container, false );
+
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        mPDAEntity = PDAEntityServer.getPDAEntity( getActivity(), mPDAEntityType, mPDAEntityIdentifier );
         mAdapter = new PDAEntityAdapter( mPDAEntity.getChildEntities() );
         mRecyclerView.setAdapter( mAdapter );
 
