@@ -6,9 +6,21 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 
 public enum PDAEntityType {
 
-    INSTANCE,
-    DATABASE,
-    TABLE,
-    COLUMN,
-    ROW
+    INSTANCE("instance"),
+    DATABASE("database"),
+    TABLE("table"),
+    COLUMN("column"),
+    ROW("row");
+
+    private String mIntentKey;
+
+    PDAEntityType( String intentKey ) {
+
+        mIntentKey = intentKey;
+    }
+
+    String getIntentKey() {
+
+        return mIntentKey;
+    }
 }
