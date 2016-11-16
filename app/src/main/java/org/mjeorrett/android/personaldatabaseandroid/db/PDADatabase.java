@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 //        if the database does not exist this creates it and calls onCreate() in PDADatabaseHelper
 //        also calls 'onUpgrade if versions is lower
         mDatabase = this.getWritableDatabase();
-        this.loadTables();
+//        this.loadTables();
     }
 
     @Override
@@ -45,6 +44,8 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     @Override
     public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
+
+        if ( mTables == null ) loadTables();
 
         return new ArrayList<PDAEntity>( mTables );
     }
@@ -84,6 +85,9 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
             mDatabase.execSQL( sql );
             PDATable newTable = new PDATable( this, cleanName );
+
+            if ( mTables == null ) loadTables();
+
             mTables.add(newTable);
         }
     }

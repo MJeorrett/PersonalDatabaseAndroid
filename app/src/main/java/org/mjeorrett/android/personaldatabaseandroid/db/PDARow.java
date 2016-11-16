@@ -51,30 +51,22 @@ public class PDARow implements PDAEntity {
     @Override
     public String getName() {
 
-        List<String> fieldsOfInterest = new ArrayList<>();
-
-        for ( Pair<String, String> aField : getFields() ){
-
-            if ( !aField.first.equals( "_id" ) ) {
-
-                fieldsOfInterest.add( aField.second );
-            }
-        }
+        List<Pair<String, String>> fields = getFields();
 
         String name;
 
-        switch ( fieldsOfInterest.size() ) {
+        switch ( fields.size() ) {
 
             case 0:
                 name = "<row empty>";
                 break;
 
             case 1:
-                name = fieldsOfInterest.get( 0 );
+                name = fields.get( 0 ).second;
                 break;
 
             default:
-                name = fieldsOfInterest.get( 0 ) + " | " + fieldsOfInterest.get( 1 );
+                name = fields.get( 0 ).second + " | " + fields.get( 1 ).second;
                 break;
         }
 
@@ -102,8 +94,11 @@ public class PDARow implements PDAEntity {
 
         for ( Map.Entry<String, String> entry : mData.entrySet() ) {
 
-            pair = new Pair<String, String>( entry.getKey(), entry.getValue() );
-            fields.add( pair );
+            if ( !entry.getKey().equals( "_id") ) {
+
+                pair = new Pair<String, String>(entry.getKey(), entry.getValue());
+                fields.add(pair);
+            }
         }
 
         return fields;

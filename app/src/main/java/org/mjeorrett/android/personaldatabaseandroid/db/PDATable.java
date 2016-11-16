@@ -27,8 +27,8 @@ public class PDATable implements PDAEntity {
 
         mDatabase = database;
         mName = name;
-        this.loadColumns();
-        this.loadRows();
+//        this.loadColumns();
+//        this.loadRows();
     }
 
     @Override
@@ -40,12 +40,16 @@ public class PDATable implements PDAEntity {
     @Override
     public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
 
-        if ( type.equals( PDAEntityType.COLUMN ) ) {
+        if ( type == PDAEntityType.COLUMN ) {
+
+            if ( mColumns == null ) loadColumns();
 
             return new ArrayList<PDAEntity>( mColumns );
         }
 
-        if (type.equals( PDAEntityType.ROW ) ) {
+        if ( type == PDAEntityType.ROW ) {
+
+            if ( mRows == null ) loadRows();
 
             return  new ArrayList<PDAEntity>( mRows );
         }
@@ -76,11 +80,16 @@ public class PDATable implements PDAEntity {
             String query = "ALTER TABLE " + mName + " ADD COLUMN " + cleanName + ";";
             mDatabase.executeSql( query );
             PDAColumn newColumn = new PDAColumn( this, cleanName );
+
+            if ( mColumns == null ) loadColumns();
+
             mColumns.add( newColumn );
         }
     }
 
     public PDARow newRow() {
+
+        if ( mRows == null ) loadRows();
 
         PDARow newRow = new PDARow( this, columnNames() );
         ContentValues contentValues = newRow.getContentValues();
@@ -101,10 +110,11 @@ public class PDATable implements PDAEntity {
 
     public PDARow getRow( UUID id ) {
 
+        if ( mRows == null ) loadRows();
+
         for ( PDARow aRow : mRows ) {
 
             if ( aRow.getId().equals( id ) ) {
-
                 return aRow;
             }
         }

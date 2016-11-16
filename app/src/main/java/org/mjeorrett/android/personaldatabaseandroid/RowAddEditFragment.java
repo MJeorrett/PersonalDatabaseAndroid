@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.mjeorrett.android.personaldatabaseandroid.db.PDADatabase;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityServer;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDARow;
+import org.mjeorrett.android.personaldatabaseandroid.db.PDATable;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +36,9 @@ public class RowAddEditFragment extends Fragment {
     private static final String ARG_ROW_ID =
             "com.mjeorrett.android.personal_database_android.row_id";
 
+    private String mDatabaseName;
+    private String mTableName;
+    private UUID mRowId;
     private PDARow mRow;
     private RecyclerView mRecyclerView;
     private FieldAdapter mAdapter;
@@ -61,19 +66,21 @@ public class RowAddEditFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        String databaseName = args.getString( ARG_DATABASE_NAME );
-        String tableName = args.getString( ARG_TABLE_NAME );
+        mDatabaseName = args.getString( ARG_DATABASE_NAME );
+        mTableName = args.getString( ARG_TABLE_NAME );
         String rowIdString = args.getString( ARG_ROW_ID );
 
-        UUID rowId = null;
-        if ( rowIdString != null ) rowId = UUID.fromString( rowIdString );
+        mRowId = null;
+        if ( rowIdString != null ) mRowId = UUID.fromString( rowIdString );
 
         mRow = (PDARow) PDAEntityServer.getPDAEntity(
                 getActivity(),
                 PDAEntityType.ROW,
-                databaseName,
-                tableName,
-                rowId );
+                mDatabaseName,
+                mTableName,
+                mRowId );
+
+        mRowId = mRow.getId();
     }
 
     @Nullable
@@ -96,6 +103,13 @@ public class RowAddEditFragment extends Fragment {
     }
 
     private void updateUI() {
+
+        mRow = (PDARow) PDAEntityServer.getPDAEntity(
+                getActivity(),
+                PDAEntityType.ROW,
+                mDatabaseName,
+                mTableName,
+                mRowId );
 
         if ( mAdapter == null ) {
 

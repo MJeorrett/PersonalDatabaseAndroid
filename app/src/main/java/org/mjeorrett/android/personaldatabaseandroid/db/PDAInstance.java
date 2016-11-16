@@ -22,7 +22,7 @@ public class PDAInstance implements PDAEntity {
     PDAInstance(Context context) {
 
         mAppContext = context.getApplicationContext();
-        this.loadDatabases( mAppContext );
+//        this.loadDatabases( mAppContext );
     }
 
     public String getName() {
@@ -32,6 +32,8 @@ public class PDAInstance implements PDAEntity {
 
     @Override
     public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
+
+        if ( mDatabases == null ) loadDatabases( mAppContext );
 
         return new ArrayList<PDAEntity>( mDatabases );
     }
@@ -63,6 +65,7 @@ public class PDAInstance implements PDAEntity {
 
         if ( cleanTitle != null ) {
 
+            if ( mDatabases == null ) loadDatabases( mAppContext );
             PDADatabase newDatabase = new PDADatabase( mAppContext, cleanTitle );
             mDatabases.add( newDatabase );
         }
