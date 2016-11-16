@@ -53,21 +53,23 @@ public class PDARow implements PDAEntity {
 
         List<Pair<String, String>> fields = getFields();
 
-        String name;
+        String name = "";
+        int numFields = fields.size();
 
-        switch ( fields.size() ) {
+        if ( numFields == 0 ) {
 
-            case 0:
-                name = "<row empty>";
-                break;
+            name = "<row empty>";
 
-            case 1:
-                name = fields.get( 0 ).second;
-                break;
+        } else {
 
-            default:
-                name = fields.get( 0 ).second + " | " + fields.get( 1 ).second;
-                break;
+            Pair aField;
+
+            for ( int i = 0; i < numFields; i++ ) {
+
+                aField = fields.get( i );
+                name += aField.first + ": " + aField.second;
+                if ( i < numFields - 1 ) name += " | ";
+            }
         }
 
         return name;
