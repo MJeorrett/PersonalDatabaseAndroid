@@ -1,9 +1,10 @@
 package org.mjeorrett.android.personaldatabaseandroid;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
 import org.mjeorrett.android.personaldatabaseandroid.core.SingleFragmentActivity;
@@ -15,13 +16,23 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
+    private static final String KEY_STRUCTURE_EDIT_MODE =
+            "org.mjeorrett.android.personaldatabaseandroid.structure_edit_mode";
+
     private Fragment mFragment;
-    private boolean mAllowAddingChildren;
+    private boolean mStructureEditMode;
+
+    public static Intent newIntent( Context context, boolean structureEditMode ) {
+
+        Intent intent = new Intent( context, PDAInstanceEditActivity.class );
+        intent.putExtra( KEY_STRUCTURE_EDIT_MODE, structureEditMode );
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        mAllowAddingChildren = PDAEntityListFragment.getAllowAddingChildren( getIntent().getExtras() );
+        mStructureEditMode = getIntent().getExtras().getBoolean( KEY_STRUCTURE_EDIT_MODE );
 
         super.onCreate(savedInstanceState);
         this.setTitle( "Databases" );
@@ -37,7 +48,7 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
                 null,
                 null,
                 PDADatabaseEditActivity.class,
-                mAllowAddingChildren );
+                mStructureEditMode );
 
         return mFragment;
     }

@@ -57,13 +57,13 @@ public class PDATable implements PDAEntity {
     public void createNewChildEntity( String name ) {
 
         List<String> existingColumnNames = mDatabase.columnNamesForTable( mName );
-        String cleanColumnName = PDADbHelper.sanitizeSQLLiteIdentifier( name, existingColumnNames, TAG );
+        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( name, existingColumnNames, TAG );
 
-        if ( cleanColumnName != null ) {
+        if ( cleanName != null ) {
 
-            String query = "ALTER TABLE " + mName + " ADD COLUMN " + cleanColumnName + ";";
+            String query = "ALTER TABLE " + mName + " ADD COLUMN " + cleanName + ";";
             mDatabase.executeSql( query );
-            PDAColumn newColumn = new PDAColumn( this, cleanColumnName );
+            PDAColumn newColumn = new PDAColumn( this, cleanName );
             mColumns.add( newColumn );
         }
     }

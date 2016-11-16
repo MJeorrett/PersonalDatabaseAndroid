@@ -34,8 +34,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick( View view ) {
-                Intent intent = new Intent( getActivity(), PDAInstanceEditActivity.class );
-                intent.putExtra( PDAEntityListFragment.ARG_ALLOW_ADDING_CHILDREN, true );
+                Intent intent = PDAInstanceEditActivity.newIntent( getActivity(), true );
                 startActivity( intent );
             }
         });
