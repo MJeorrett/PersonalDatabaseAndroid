@@ -79,37 +79,37 @@ public class PDATitleEditFragment extends Fragment {
                 mColumnName );
     }
 
-    @Override
-    public void onSaveInstanceState( Bundle outState ) {
-
-        super.onSaveInstanceState(outState);
-
-        outState.putSerializable( ARG_ENTITY_TYPE, mEntity.getType() );
-        outState.putString( ARG_DATABASE_NAME, mDatabaseName );
-        outState.putString( ARG_TABLE_NAME, mTableName );
-        outState.putString( ARG_COLUMN_NAME, mColumnName );
-    }
-
-    @Override
-    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
-
-        super.onActivityCreated(savedInstanceState);
-
-        if ( savedInstanceState != null ) {
-
-            PDAEntityType entityType = (PDAEntityType) savedInstanceState.getSerializable( ARG_ENTITY_TYPE );
-            mDatabaseName = savedInstanceState.getString( ARG_DATABASE_NAME );
-            mTableName = savedInstanceState.getString( ARG_TABLE_NAME );
-            mColumnName = savedInstanceState.getString( ARG_COLUMN_NAME );
-
-            mEntity = PDAEntityServer.getPDAEntity(
-                    getActivity(),
-                    entityType,
-                    mDatabaseName,
-                    mTableName,
-                    mColumnName );
-        }
-    }
+//    @Override
+//    public void onSaveInstanceState( Bundle outState ) {
+//
+//        super.onSaveInstanceState(outState);
+//
+//        outState.putSerializable( ARG_ENTITY_TYPE, mEntity.getType() );
+//        outState.putString( ARG_DATABASE_NAME, mDatabaseName );
+//        outState.putString( ARG_TABLE_NAME, mTableName );
+//        outState.putString( ARG_COLUMN_NAME, mColumnName );
+//    }
+//
+//    @Override
+//    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
+//
+//        super.onActivityCreated(savedInstanceState);
+//
+//        if ( savedInstanceState != null ) {
+//
+//            PDAEntityType entityType = (PDAEntityType) savedInstanceState.getSerializable( ARG_ENTITY_TYPE );
+//            mDatabaseName = savedInstanceState.getString( ARG_DATABASE_NAME );
+//            mTableName = savedInstanceState.getString( ARG_TABLE_NAME );
+//            mColumnName = savedInstanceState.getString( ARG_COLUMN_NAME );
+//
+//            mEntity = PDAEntityServer.getPDAEntity(
+//                    getActivity(),
+//                    entityType,
+//                    mDatabaseName,
+//                    mTableName,
+//                    mColumnName );
+//        }
+//    }
 
     @Nullable
     @Override
