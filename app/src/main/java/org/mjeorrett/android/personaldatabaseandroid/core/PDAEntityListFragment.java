@@ -121,8 +121,7 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        mAdapter = new PDAEntityAdapter( mEntity.getChildEntities( null ) );
-        mRecyclerView.setAdapter( mAdapter );
+        updateView();
 
         return view;
     }
@@ -168,9 +167,31 @@ public class PDAEntityListFragment extends Fragment {
             public void onOKClicked( String enteredText ) {
 
                 mEntity.createNewChildEntity( enteredText );
-                mAdapter.setEntities( mEntity.getChildEntities( null ) );
+                updateView();
             }
         });
+    }
+
+    private void updateView() {
+
+        PDAEntityType entityType = mEntity.getType();
+        List<PDAEntity> childEntities;
+
+        if ( entityType == PDAEntityType.TABLE ) {
+
+            if ( mAllowAddingChildren ) {
+                childEntities = mEntity.getChildEntities( PDAEntityType.COLUMN );
+            } else {
+                childEntities = mEntity.getChildEntities( PDAEntityType.ROW );
+            }
+
+        } else {
+
+            childEntities = mEntity.getChildEntities( null );
+        }
+
+        mAdapter = new PDAEntityAdapter( childEntities );
+        mRecyclerView.setAdapter( mAdapter );
     }
 
     public static boolean getAllowAddingChildren( Bundle extras ) {
