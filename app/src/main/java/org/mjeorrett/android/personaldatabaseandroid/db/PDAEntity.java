@@ -1,5 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
@@ -14,7 +15,7 @@ public interface PDAEntity {
     String getName();
     List<PDAEntity> getChildEntities( @Nullable PDAEntityType type );
     Intent putExtrasInIntent( Intent intent );
-    void createNewChildEntity( String title );
+    void createNewChildEntity(Context context, String title );
     String getChildTypeDescription();
     PDAEntityType getType();
 

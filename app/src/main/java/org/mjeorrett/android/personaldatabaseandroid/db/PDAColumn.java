@@ -1,5 +1,6 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
@@ -51,7 +52,7 @@ public class PDAColumn implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity(String title) {
+    public void createNewChildEntity( Context context, String title) {
 //        not implemented as PDAColumn will never be the mEntity in a PDAEntityListFragment
     }
 

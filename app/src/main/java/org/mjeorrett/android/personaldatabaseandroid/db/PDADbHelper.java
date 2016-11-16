@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -21,25 +22,21 @@ public class PDADbHelper {
 
     private static final String TAG = "PDADbHelper";
 
-    public static String sanitizeSQLLiteIdentifier(String uncleanName, List<String> existingNames, String callingTag ) {
+    public static String sanitizeSQLLiteIdentifier( Context context, String uncleanName, List<String> existingNames, String callingTag ) {
 
         String cleanName = uncleanName.replaceAll( " ", "_" );
         cleanName = cleanName.toLowerCase();
 
         if ( existingNames != null && existingNames.contains( cleanName ) ) {
 
-            String message =
-                    String.format( "User tried to duplicate SQLLite name '%s' " +
-                            "so ignoring till I figure out something better to do", cleanName );
-            Log.i( callingTag, message );
+            String message = String.format( "Error: '%s' is already used.", cleanName );
+            Toast.makeText( context, message, Toast.LENGTH_SHORT ).show();
             return null;
         }
 
         if ( cleanName.equals( "" ) ) {
-            String message =
-                    "User tried to create SQLLite entity with no name" +
-                            " so ignoring till I figure out something better to do";
-            Log.i( callingTag, message );
+            String message = "Error: cannot leave name blank.";
+            Toast.makeText( context, message, Toast.LENGTH_SHORT ).show();
             return null;
         }
 

@@ -189,7 +189,7 @@ public class PDAEntityListFragment extends Fragment {
             @Override
             public void onOKClicked( String enteredText ) {
 
-                mEntity.createNewChildEntity( enteredText );
+                mEntity.createNewChildEntity( getActivity(), enteredText );
                 updateView();
             }
         });

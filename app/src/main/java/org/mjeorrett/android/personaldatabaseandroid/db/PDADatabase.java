@@ -71,11 +71,11 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( String name ) {
+    public void createNewChildEntity( Context context, String name ) {
 
         ArrayList<String> tableNames = (ArrayList<String>) tableNames();
 
-        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( name, tableNames, TAG );
+        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( context, name, tableNames, TAG );
 
         if ( cleanName != null ) {
 

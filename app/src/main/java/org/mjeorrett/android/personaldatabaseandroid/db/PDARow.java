@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -127,12 +128,12 @@ public class PDARow implements PDAEntity {
     }
 
     @Override
-    public Intent putExtrasInIntent(Intent intent) {
+    public Intent putExtrasInIntent( Intent intent ) {
         return null;
     }
 
     @Override
-    public void createNewChildEntity(String title) {
+    public void createNewChildEntity( Context context, String title ) {
 //        not implemented as PDARow will never be the mEntity in a PDAEntityListFragment
     }
 

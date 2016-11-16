@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
@@ -70,10 +71,10 @@ public class PDATable implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( String name ) {
+    public void createNewChildEntity( Context context, String name ) {
 
         List<String> existingColumnNames = mDatabase.columnNamesForTable( mName );
-        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( name, existingColumnNames, TAG );
+        String cleanName = PDADbHelper.sanitizeSQLLiteIdentifier( context, name, existingColumnNames, TAG );
 
         if ( cleanName != null ) {
 

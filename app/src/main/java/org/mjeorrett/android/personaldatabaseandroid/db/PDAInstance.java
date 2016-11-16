@@ -57,11 +57,11 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Override
-    public void createNewChildEntity( String title ) {
+    public void createNewChildEntity( Context context, String title ) {
 
         List<String> databaseNames = PDADbHelper.getUserDatabaseNames( mAppContext );
 
-        String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( title, databaseNames, TAG );
+        String cleanTitle = PDADbHelper.sanitizeSQLLiteIdentifier( context, title, databaseNames, TAG );
 
         if ( cleanTitle != null ) {
 
