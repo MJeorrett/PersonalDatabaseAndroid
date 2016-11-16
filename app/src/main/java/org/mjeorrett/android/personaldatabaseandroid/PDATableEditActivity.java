@@ -16,9 +16,6 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDATableEditActivity extends DoubleFragmentActivity {
 
-    private static final String TOP_FRAGMENT_KEY = "top_fragment";
-    private static final String BOTTOM_FRAGMENT_KEY = "bottom_fragment";
-
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
 
@@ -28,6 +25,20 @@ public class PDATableEditActivity extends DoubleFragmentActivity {
         super.onCreate(savedInstanceState);
 
         this.setTitle( "Edit Table");
+    }
+
+    @Nullable
+    @Override
+    protected String getTopTitle() {
+
+        return "Table Name";
+    }
+
+    @Nullable
+    @Override
+    protected String getBottomTitle() {
+
+        return "Columns";
     }
 
     @Override

@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDATitleEditFragment;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
+import org.w3c.dom.Text;
 
 /**
  * Created by user on 15/11/2016.
  */
 
 public class PDADatabaseEditActivity extends DoubleFragmentActivity {
-
-    private static final String TOP_FRAGMENT_KEY = "top_fragment";
-    private static final String BOTTOM_FRAGMENT_KEY = "bottom_fragment";
 
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
@@ -27,6 +26,20 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
 
         super.onCreate(savedInstanceState);
         this.setTitle( "Edit Database" );
+    }
+
+    @Nullable
+    @Override
+    protected String getTopTitle() {
+
+        return "Database Name";
+    }
+
+    @Nullable
+    @Override
+    protected String getBottomTitle() {
+
+        return "Tables";
     }
 
     @Override
