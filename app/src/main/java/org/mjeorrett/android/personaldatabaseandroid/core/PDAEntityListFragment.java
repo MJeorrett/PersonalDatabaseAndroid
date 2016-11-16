@@ -43,7 +43,7 @@ public class PDAEntityListFragment extends Fragment {
             "com.mjeorrett.android.personal_database_android.row_id";
     private static final String ARG_NEXT_ACTVIITY =
             "com.mjeorrett.android.personal_database_android.next_activity";
-    public static final String ARG_ALLOW_ADDING_CHILDREN =
+    public static final String ARG_STRUCTURE_EDIT_MODE =
             "com.mjeorrett.android.personal_database_android.allow_adding_children";
 
     private RecyclerView mRecyclerView;
@@ -54,7 +54,8 @@ public class PDAEntityListFragment extends Fragment {
     private String mTableName;
     private String mColumnName;
     private Class mNextActivity;
-    private boolean mAllowAddingChildren;
+    private boolean mStructureEditMode;
+    private boolean mOnTableActivity;
 
     public static PDAEntityListFragment newInstance(
 
@@ -73,7 +74,7 @@ public class PDAEntityListFragment extends Fragment {
         args.putString(ARG_COLUMN_NAME, column );
         args.putSerializable( ARG_ROW_ID, row_id );
         args.putSerializable( ARG_NEXT_ACTVIITY, nextActivity );
-        args.putBoolean( ARG_ALLOW_ADDING_CHILDREN, allowAddingChildren );
+        args.putBoolean(ARG_STRUCTURE_EDIT_MODE, allowAddingChildren );
 
         PDAEntityListFragment fragment = new PDAEntityListFragment();
         fragment.setArguments( args );
@@ -93,7 +94,7 @@ public class PDAEntityListFragment extends Fragment {
         mTableName = args.getString( ARG_TABLE_NAME );
         mColumnName = args.getString( ARG_COLUMN_NAME );
         mNextActivity = (Class) args.getSerializable( ARG_NEXT_ACTVIITY );
-        mAllowAddingChildren = args.getBoolean( ARG_ALLOW_ADDING_CHILDREN );
+        mStructureEditMode = args.getBoolean(ARG_STRUCTURE_EDIT_MODE);
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
@@ -103,7 +104,9 @@ public class PDAEntityListFragment extends Fragment {
                 mColumnName
         );
 
-        if ( mAllowAddingChildren ) {
+        mOnTableActivity = mEntity.getType() == PDAEntityType.TABLE;
+
+        if ( mStructureEditMode || mOnTableActivity ) {
 
             setHasOptionsMenu(true);
         }
@@ -131,7 +134,7 @@ public class PDAEntityListFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
 
-        if ( mAllowAddingChildren ) {
+        if ( mStructureEditMode || mOnTableActivity ) {
 
             inflater.inflate(R.menu.fragment_pdaentity_list, menu);
         }
@@ -179,7 +182,7 @@ public class PDAEntityListFragment extends Fragment {
 
         if ( entityType == PDAEntityType.TABLE ) {
 
-            if ( mAllowAddingChildren ) {
+            if (mStructureEditMode) {
                 childEntities = mEntity.getChildEntities( PDAEntityType.COLUMN );
             } else {
                 childEntities = mEntity.getChildEntities( PDAEntityType.ROW );
@@ -196,7 +199,7 @@ public class PDAEntityListFragment extends Fragment {
 
     public static boolean getAllowAddingChildren( Bundle extras ) {
 
-        boolean allowAddingChildren = extras.getBoolean( ARG_ALLOW_ADDING_CHILDREN );
+        boolean allowAddingChildren = extras.getBoolean(ARG_STRUCTURE_EDIT_MODE);
         return allowAddingChildren;
     }
 
@@ -218,7 +221,7 @@ public class PDAEntityListFragment extends Fragment {
             if ( mNextActivity != null ) {
                 Intent intent = new Intent(getActivity(), mNextActivity);
                 mEntity.putExtrasInIntent(intent);
-                intent.putExtra( ARG_ALLOW_ADDING_CHILDREN, mAllowAddingChildren );
+                intent.putExtra(ARG_STRUCTURE_EDIT_MODE, mStructureEditMode);
 
                 startActivity(intent);
             }
