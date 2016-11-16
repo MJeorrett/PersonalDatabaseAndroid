@@ -121,7 +121,7 @@ public class PDAEntityListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById( R.id.pdaentity_recycler_view );
         mRecyclerView.setLayoutManager( new LinearLayoutManager( this.getActivity() ) );
 
-        mAdapter = new PDAEntityAdapter( mEntity.getChildEntities() );
+        mAdapter = new PDAEntityAdapter( mEntity.getChildEntities( null ) );
         mRecyclerView.setAdapter( mAdapter );
 
         return view;
@@ -168,7 +168,7 @@ public class PDAEntityListFragment extends Fragment {
             public void onOKClicked( String enteredText ) {
 
                 mEntity.createNewChildEntity( enteredText );
-                mAdapter.setEntities( mEntity.getChildEntities() );
+                mAdapter.setEntities( mEntity.getChildEntities( null ) );
             }
         });
     }

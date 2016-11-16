@@ -2,6 +2,7 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class PDATable implements PDAEntity {
         mDatabase = database;
         mName = name;
         this.loadColumns();
+        this.loadRows();
     }
 
     @Override
@@ -34,9 +36,19 @@ public class PDATable implements PDAEntity {
     }
 
     @Override
-    public List<PDAEntity> getChildEntities() {
+    public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
 
-        return new ArrayList<PDAEntity>( mColumns );
+        if ( type == PDAEntityType.COLUMN ) {
+
+            return new ArrayList<PDAEntity>(mColumns);
+        }
+
+        if (type == PDAEntityType.ROW ) {
+
+            return  new ArrayList<PDAEntity>( mRows );
+        }
+
+        return null;
     }
 
     @Override
@@ -93,7 +105,11 @@ public class PDATable implements PDAEntity {
 
         List<HashMap<String, String>> data = cursorWrapper.getStringData();
 
+        for ( HashMap<String, String> dataRow : data ) {
 
+            aRow = new PDARow( this, dataRow );
+            mRows.add( aRow );
+        }
 
         cursor.close();
     }

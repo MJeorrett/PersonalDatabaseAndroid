@@ -1,6 +1,7 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +52,7 @@ public class PDARow implements PDAEntity {
     }
 
     @Override
-    public List<PDAEntity> getChildEntities() {
+    public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
 //        return null as PDARow will never be the mEntity in a PDAEntityListFragment
         return null;
     }

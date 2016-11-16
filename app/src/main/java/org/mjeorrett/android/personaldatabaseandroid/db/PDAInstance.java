@@ -2,6 +2,8 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class PDAInstance implements PDAEntity {
     }
 
     @Override
-    public List<PDAEntity> getChildEntities() {
+    public List<PDAEntity> getChildEntities( @Nullable PDAEntityType type ) {
 
         return new ArrayList<PDAEntity>( mDatabases );
     }
