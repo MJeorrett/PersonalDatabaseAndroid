@@ -22,7 +22,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
     private String mName;
     private SQLiteDatabase mDatabase;
-    private List<PDAEntity> mTables;
+    private List<PDATable> mTables;
 
     PDADatabase( Context context, String name ) {
 
@@ -45,7 +45,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     @Override
     public List<PDAEntity> getChildEntities() {
 
-        return new ArrayList<>( mTables );
+        return new ArrayList<PDAEntity>( mTables );
     }
 
     @Override
@@ -99,7 +99,7 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
         }
     }
 
-    private PDACursorWrapper queryTableWhere( String tableName, String[] columns, String whereClause, String[] whereArgs ) {
+    PDACursorWrapper queryTableWhere( String tableName, String[] columns, String whereClause, String[] whereArgs ) {
 
         Cursor cursor = mDatabase.query(
                 tableName,

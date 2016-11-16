@@ -1,8 +1,10 @@
 package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Intent;
+import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,7 +17,8 @@ public class PDATable implements PDAEntity {
 
     private String mName;
     private PDADatabase mDatabase;
-    private ArrayList<PDAEntity> mColumns;
+    private List<PDAColumn> mColumns;
+    private List<PDARow> mRows;
 
     PDATable( PDADatabase database, String name ) {
 
@@ -33,7 +36,7 @@ public class PDATable implements PDAEntity {
     @Override
     public List<PDAEntity> getChildEntities() {
 
-        return new ArrayList<>( mColumns );
+        return new ArrayList<PDAEntity>( mColumns );
     }
 
     @Override
@@ -46,11 +49,6 @@ public class PDATable implements PDAEntity {
     public PDAEntityType getType() {
 
         return PDAEntityType.TABLE;
-    }
-
-    private List<String> columnNames() {
-
-        return mDatabase.columnNamesForTable( mName );
     }
 
     @Override
@@ -68,6 +66,11 @@ public class PDATable implements PDAEntity {
         }
     }
 
+    private List<String> columnNames() {
+
+        return mDatabase.columnNamesForTable( mName );
+    }
+
     private void loadColumns() {
 
         mColumns = new ArrayList<>();
@@ -78,6 +81,21 @@ public class PDATable implements PDAEntity {
             aColumn = new PDAColumn( this, columnName );
             mColumns.add( aColumn );
         }
+    }
+
+    private void loadRows() {
+
+        mRows = new ArrayList<>();
+        PDARow aRow;
+
+        Cursor cursor = mDatabase.queryTableWhere( mName, null, null, null );
+        PDACursorWrapper cursorWrapper = new PDACursorWrapper( cursor );
+
+        List<HashMap<String, String>> data = cursorWrapper.getStringData();
+
+
+
+        cursor.close();
     }
 
     @Override

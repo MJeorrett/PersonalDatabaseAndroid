@@ -2,6 +2,9 @@ package org.mjeorrett.android.personaldatabaseandroid.db;
 
 import android.content.Intent;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -11,18 +14,40 @@ import java.util.List;
 public class PDARow implements PDAEntity {
 
     private PDATable mTable;
-    private String mName;
+    private HashMap<String, String> mData;
 
-    PDARow( PDATable table, String name ) {
+    PDARow(PDATable table, HashMap<String, String> data ) {
 
         mTable = table;
-        mName = name;
+        mData = data;
     }
 
     @Override
     public String getName() {
 
-        return mName;
+        List<String> values = getValues();
+        String name = null;
+
+        switch ( values.size() ) {
+
+            case 0:
+                name = "<row empty>";
+                break;
+
+            case 1:
+                name = values.get( 0 );
+                break;
+
+            case 2:
+                name = values.get( 0 ) + values.get( 1 );
+        }
+
+        return name;
+    }
+
+    public List<String> getValues() {
+
+        return new ArrayList<>( mData.values() );
     }
 
     @Override
