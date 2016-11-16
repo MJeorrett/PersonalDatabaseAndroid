@@ -15,12 +15,13 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
-    private static final String FRAGMENT_KEY = "entityListFragment";
-
     private Fragment mFragment;
+    private boolean mAllowAddingChildren;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        mAllowAddingChildren = PDAEntityListFragment.getAllowAddingChildren( getIntent().getExtras() );
 
         super.onCreate(savedInstanceState);
         this.setTitle( "Databases" );
@@ -36,7 +37,7 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
                 null,
                 null,
                 PDADatabaseEditActivity.class,
-                true );
+                mAllowAddingChildren );
 
         return mFragment;
     }

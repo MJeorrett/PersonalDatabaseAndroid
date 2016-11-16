@@ -3,14 +3,11 @@ package org.mjeorrett.android.personaldatabaseandroid;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDATitleEditFragment;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
-import org.w3c.dom.Text;
 
 /**
  * Created by user on 15/11/2016.
@@ -20,9 +17,12 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
 
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
+    private boolean mAllowAddingChildren;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        mAllowAddingChildren = PDAEntityListFragment.getAllowAddingChildren( getIntent().getExtras() );
 
         super.onCreate(savedInstanceState);
         this.setTitle( "Edit Database" );
@@ -65,7 +65,7 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
                 null,
                 null,
                 PDATableEditActivity.class,
-                true );
+                mAllowAddingChildren );
 
         return mBottomFragment;
     }

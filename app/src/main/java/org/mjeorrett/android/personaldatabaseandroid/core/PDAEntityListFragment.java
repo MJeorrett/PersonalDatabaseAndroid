@@ -43,7 +43,7 @@ public class PDAEntityListFragment extends Fragment {
             "com.mjeorrett.android.personal_database_android.row_id";
     private static final String ARG_NEXT_ACTVIITY =
             "com.mjeorrett.android.personal_database_android.next_activity";
-    private static final String ARG_ALLOW_ADDING_CHILDREN =
+    public static final String ARG_ALLOW_ADDING_CHILDREN =
             "com.mjeorrett.android.personal_database_android.allow_adding_children";
 
     private RecyclerView mRecyclerView;
@@ -173,6 +173,12 @@ public class PDAEntityListFragment extends Fragment {
         });
     }
 
+    public static boolean getAllowAddingChildren( Bundle extras ) {
+
+        boolean allowAddingChildren = extras.getBoolean( ARG_ALLOW_ADDING_CHILDREN );
+        return allowAddingChildren;
+    }
+
     private class PDAEntityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleTextView;
@@ -191,6 +197,7 @@ public class PDAEntityListFragment extends Fragment {
             if ( mNextActivity != null ) {
                 Intent intent = new Intent(getActivity(), mNextActivity);
                 mEntity.putExtrasInIntent(intent);
+                intent.putExtra( ARG_ALLOW_ADDING_CHILDREN, mAllowAddingChildren );
 
                 startActivity(intent);
             }

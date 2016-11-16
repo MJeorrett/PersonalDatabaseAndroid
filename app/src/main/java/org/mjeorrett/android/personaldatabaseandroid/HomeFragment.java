@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
+
 /**
  * Created by user on 14/11/2016.
  */
@@ -33,6 +35,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick( View view ) {
                 Intent intent = new Intent( getActivity(), PDAInstanceEditActivity.class );
+                intent.putExtra( PDAEntityListFragment.ARG_ALLOW_ADDING_CHILDREN, true );
                 startActivity( intent );
             }
         });
