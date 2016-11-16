@@ -40,6 +40,14 @@ public class HomeFragment extends Fragment {
         });
 
         mEditDataButton = (Button) view.findViewById( R.id.fragment_home_edit_data_button );
+        mEditDataButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = PDAInstanceEditActivity.newIntent( getActivity(), false );
+                startActivity( intent );
+            }
+        });
 
         return view;
     }
