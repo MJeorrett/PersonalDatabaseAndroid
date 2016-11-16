@@ -45,26 +45,37 @@ public class PDARow implements PDAEntity {
         }
 
         mData.remove( "_id" );
+        mData.remove( "uuid" );
     }
 
     @Override
     public String getName() {
 
-        List<String> values = getValues();
-        String name = null;
+        List<String> fieldsOfInterest = new ArrayList<>();
 
-        switch ( values.size() ) {
+        for ( Pair<String, String> aField : getFields() ){
+
+            if ( !aField.first.equals( "_id" ) ) {
+
+                fieldsOfInterest.add( aField.second );
+            }
+        }
+
+        String name;
+
+        switch ( fieldsOfInterest.size() ) {
 
             case 0:
                 name = "<row empty>";
                 break;
 
             case 1:
-                name = values.get( 0 );
+                name = fieldsOfInterest.get( 0 );
                 break;
 
-            case 2:
-                name = values.get( 0 ) + values.get( 1 );
+            default:
+                name = fieldsOfInterest.get( 0 ) + " | " + fieldsOfInterest.get( 1 );
+                break;
         }
 
         return name;

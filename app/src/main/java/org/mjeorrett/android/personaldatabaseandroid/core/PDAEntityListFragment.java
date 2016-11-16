@@ -199,6 +199,13 @@ public class PDAEntityListFragment extends Fragment {
         startActivity( intent );
     }
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        updateView();
+    }
+
     private void updateView() {
 
         PDAEntityType entityType = mEntity.getType();
@@ -217,13 +224,23 @@ public class PDAEntityListFragment extends Fragment {
             childEntities = mEntity.getChildEntities( null );
         }
 
-        mAdapter = new PDAEntityAdapter( childEntities );
-        mRecyclerView.setAdapter( mAdapter );
+
+        if ( mAdapter == null ) {
+
+            mAdapter = new PDAEntityAdapter(childEntities);
+            mRecyclerView.setAdapter(mAdapter);
+
+        } else {
+
+            mAdapter.setPDAEntities( childEntities );
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
 
     public static boolean getAllowAddingChildren( Bundle extras ) {
 
-        boolean allowAddingChildren = extras.getBoolean(ARG_STRUCTURE_EDIT_MODE);
+        boolean allowAddingChildren = extras.getBoolean( ARG_STRUCTURE_EDIT_MODE );
         return allowAddingChildren;
     }
 
@@ -268,6 +285,11 @@ public class PDAEntityListFragment extends Fragment {
             mPDAEntities = new ArrayList<>( pdaEntities );
         }
 
+        public void setPDAEntities( List<PDAEntity> pdaEntities ) {
+
+            mPDAEntities = new ArrayList<>( pdaEntities );
+        }
+
         @Override
         public PDAEntityHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 
@@ -279,7 +301,7 @@ public class PDAEntityListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(PDAEntityHolder holder, int position) {
+        public void onBindViewHolder( PDAEntityHolder holder, int position ) {
 
             PDAEntity entity = mPDAEntities.get( position );
             holder.bindPDAEntity( entity );
@@ -291,12 +313,12 @@ public class PDAEntityListFragment extends Fragment {
             return mPDAEntities.size();
         }
 
-        public void setEntities( List<PDAEntity> newEntities ) {
-
-            mPDAEntities.clear();
-            mPDAEntities.addAll( newEntities );
-            notifyDataSetChanged();
-        }
+//        public void setEntities( List<PDAEntity> newEntities ) {
+//
+//            mPDAEntities.clear();
+//            mPDAEntities.addAll( newEntities );
+//            notifyDataSetChanged();
+//        }
     }
 
 //    @Override

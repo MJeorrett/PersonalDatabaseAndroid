@@ -104,7 +104,7 @@ public class RowAddEditFragment extends Fragment {
 
         } else {
 
-            mAdapter.refreshFieldsData();
+            mAdapter.setRow( mRow );
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -159,9 +159,10 @@ public class RowAddEditFragment extends Fragment {
             mFields = row.getFields();
         }
 
-        public void refreshFieldsData() {
+        public void setRow( PDARow row ) {
 
-            mFields = mRow.getFields();
+            mRow = row;
+            mFields = row.getFields();
         }
 
         @Override
