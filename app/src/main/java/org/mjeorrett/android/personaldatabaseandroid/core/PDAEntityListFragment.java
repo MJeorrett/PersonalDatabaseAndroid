@@ -50,6 +50,7 @@ public class PDAEntityListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PDAEntityAdapter mAdapter;
 
+    private PDAEntityType mEntityType;
     private PDAEntity mEntity;
     private String mDatabaseName;
     private String mTableName;
@@ -90,7 +91,7 @@ public class PDAEntityListFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        PDAEntityType entityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
+        mEntityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
         mDatabaseName = args.getString( ARG_DATABASE_NAME );
         mTableName = args.getString( ARG_TABLE_NAME );
         mColumnName = args.getString( ARG_COLUMN_NAME );
@@ -99,7 +100,7 @@ public class PDAEntityListFragment extends Fragment {
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
-                entityType,
+                mEntityType,
                 mDatabaseName,
                 mTableName,
                 null
@@ -208,10 +209,17 @@ public class PDAEntityListFragment extends Fragment {
 
     private void updateView() {
 
-        PDAEntityType entityType = mEntity.getType();
+        mEntity = PDAEntityServer.getPDAEntity(
+                getActivity(),
+                mEntityType,
+                mDatabaseName,
+                mTableName,
+                null
+        );
+
         List<PDAEntity> childEntities;
 
-        if ( entityType == PDAEntityType.TABLE ) {
+        if ( mEntityType == PDAEntityType.TABLE ) {
 
             if (mStructureEditMode) {
                 childEntities = mEntity.getChildEntities( PDAEntityType.COLUMN );

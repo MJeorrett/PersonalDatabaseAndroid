@@ -81,11 +81,6 @@ public class PDARow implements PDAEntity {
         return name;
     }
 
-    public List<String> getValues() {
-
-        return new ArrayList<>( mData.values() );
-    }
-
     public ContentValues getContentValues() {
 
         ContentValues contentValues = new ContentValues();
@@ -103,11 +98,11 @@ public class PDARow implements PDAEntity {
     public List<Pair<String, String>> getFields() {
 
         List<Pair<String, String>> fields = new ArrayList<>();
-        Pair pair;
+        Pair<String, String> pair;
 
         for ( Map.Entry<String, String> entry : mData.entrySet() ) {
 
-            pair = new Pair( entry.getKey(), entry.getValue() );
+            pair = new Pair<String, String>( entry.getKey(), entry.getValue() );
             fields.add( pair );
         }
 
