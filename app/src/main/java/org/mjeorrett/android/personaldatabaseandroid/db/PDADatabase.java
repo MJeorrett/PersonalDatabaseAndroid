@@ -95,8 +95,11 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
 
         for ( String tableName : tableNames() ) {
 
-            newTable = new PDATable( this, tableName );
-            mTables.add( newTable );
+            if ( !tableName.equals( "android_metadata" ) && !tableName.equals( "sqlite_sequence" ) ) {
+
+                newTable = new PDATable(this, tableName);
+                mTables.add(newTable);
+            }
         }
     }
 
@@ -142,6 +145,11 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     protected void executeSql( String sql ) {
 
         mDatabase.execSQL( sql );
+    }
+
+    protected SQLiteDatabase exec() {
+
+        return mDatabase;
     }
 
     @Override

@@ -15,8 +15,6 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
 
 public class PDATableActivity extends DoubleFragmentActivity {
 
-    private Fragment mTopFragment;
-    private Fragment mBottomFragment;
     private boolean mStructureEditMode;
 
     @Override
@@ -51,19 +49,19 @@ public class PDATableActivity extends DoubleFragmentActivity {
     @Override
     protected Fragment createTopFragment() {
 
-        mTopFragment = PDATitleEditFragment.newInstance(
+        Fragment fragment = PDATitleEditFragment.newInstance(
                 PDAEntityType.TABLE,
                 getDatabaseName(),
                 getTableName(),
                 null);
 
-        return mTopFragment;
+        return fragment;
     }
 
     @Override
     protected Fragment createBottomFragment() {
 
-        mBottomFragment = PDAEntityListFragment.newInstance(
+        Fragment fragment = PDAEntityListFragment.newInstance(
                 PDAEntityType.TABLE,
                 getDatabaseName(),
                 getTableName(),
@@ -72,7 +70,7 @@ public class PDATableActivity extends DoubleFragmentActivity {
                 null,
                 mStructureEditMode );
 
-        return mBottomFragment;
+        return fragment;
     }
 
     private String getDatabaseName() {

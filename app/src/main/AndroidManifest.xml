@@ -28,6 +28,9 @@
         <activity
             android:name=".PDATableActivity"/>
 
+        <activity
+            android:name=".RowAddEditActivity"/>
+
     </application>
 
 </manifest>

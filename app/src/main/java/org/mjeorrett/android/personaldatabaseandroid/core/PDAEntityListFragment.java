@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.R;
+import org.mjeorrett.android.personaldatabaseandroid.RowAddEditActivity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityServer;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
@@ -101,7 +102,7 @@ public class PDAEntityListFragment extends Fragment {
                 entityType,
                 mDatabaseName,
                 mTableName,
-                mColumnName
+                null
         );
 
         mOnTableActivity = mEntity.getType() == PDAEntityType.TABLE;
@@ -143,16 +144,32 @@ public class PDAEntityListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch ( item.getItemId() ) {
+        int menuItemId = item.getItemId();
+        boolean returnValue;
+
+        switch ( menuItemId ) {
 
             case R.id.fragment_pdaentity_list_add_entity:
-                this.createNewChildEntity();
-                return true;
+
+                if ( mOnTableActivity && !mStructureEditMode ) {
+
+                    this.goToRowAddEditActivity();
+
+                } else {
+
+                    this.createNewChildEntity();
+                }
+
+                returnValue = true;
+                break;
 
             default:
-                return super.onOptionsItemSelected( item );
+                returnValue = super.onOptionsItemSelected( item );
+                break;
 
         }
+
+        return returnValue;
     }
 
     private void createNewChildEntity() {
@@ -173,6 +190,13 @@ public class PDAEntityListFragment extends Fragment {
                 updateView();
             }
         });
+    }
+
+    private void goToRowAddEditActivity() {
+
+        Intent intent = new Intent( getActivity(), RowAddEditActivity.class );
+        intent = mEntity.putExtrasInIntent( intent );
+        startActivity( intent );
     }
 
     private void updateView() {

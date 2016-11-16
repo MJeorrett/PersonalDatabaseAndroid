@@ -76,7 +76,7 @@ public class PDATitleEditFragment extends Fragment {
                 entityType,
                 mDatabaseName,
                 mTableName,
-                mColumnName );
+                null );
     }
 
     @Nullable

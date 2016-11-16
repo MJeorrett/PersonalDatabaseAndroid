@@ -16,9 +16,13 @@ public class PDAEntityServer {
             PDAEntityType entityType,
             @Nullable String databaseName,
             @Nullable String tableName,
-            @Nullable String columnName ) {
+            @Nullable UUID rowId ) {
 
         PDAEntity result = null;
+        PDADatabase database;
+        PDATable table;
+
+        if ( entityType == null ) entityType = PDAEntityType.ROW;
 
         switch ( entityType ) {
 
@@ -31,8 +35,23 @@ public class PDAEntityServer {
                 break;
 
             case TABLE:
-                PDADatabase database = new PDADatabase( context, databaseName );
+                database = new PDADatabase( context, databaseName );
                 result = new PDATable( database, tableName );
+                break;
+
+            case ROW:
+                database = new PDADatabase( context, databaseName );
+                table = new PDATable( database, tableName );
+
+                if ( rowId == null ) {
+
+                    result = table.newRow();
+
+                } else {
+
+                    result = table.getRow(rowId);
+
+                }
                 break;
 
         }
