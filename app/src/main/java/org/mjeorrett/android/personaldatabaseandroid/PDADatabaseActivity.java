@@ -13,7 +13,7 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
  * Created by user on 15/11/2016.
  */
 
-public class PDADatabaseEditActivity extends DoubleFragmentActivity {
+public class PDADatabaseActivity extends DoubleFragmentActivity {
 
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
@@ -64,7 +64,7 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
                 null,
                 null,
                 null,
-                PDATableEditActivity.class,
+                PDATableActivity.class,
                 mAllowAddingChildren );
 
         return mBottomFragment;

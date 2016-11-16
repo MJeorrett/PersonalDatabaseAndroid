@@ -14,7 +14,7 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
  * Created by user on 14/11/2016.
  */
 
-public class PDAInstanceEditActivity extends SingleFragmentActivity {
+public class PDAInstanceActivity extends SingleFragmentActivity {
 
     private static final String KEY_STRUCTURE_EDIT_MODE =
             "org.mjeorrett.android.personaldatabaseandroid.structure_edit_mode";
@@ -24,7 +24,7 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
 
     public static Intent newIntent( Context context, boolean structureEditMode ) {
 
-        Intent intent = new Intent( context, PDAInstanceEditActivity.class );
+        Intent intent = new Intent( context, PDAInstanceActivity.class );
         intent.putExtra( KEY_STRUCTURE_EDIT_MODE, structureEditMode );
         return intent;
     }
@@ -47,7 +47,7 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
                 null,
                 null,
                 null,
-                PDADatabaseEditActivity.class,
+                PDADatabaseActivity.class,
                 mStructureEditMode );
 
         return mFragment;

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
-
 /**
  * Created by user on 14/11/2016.
  */
@@ -34,7 +32,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick( View view ) {
-                Intent intent = PDAInstanceEditActivity.newIntent( getActivity(), true );
+                Intent intent = PDAInstanceActivity.newIntent( getActivity(), true );
                 startActivity( intent );
             }
         });
@@ -44,7 +42,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent intent = PDAInstanceEditActivity.newIntent( getActivity(), false );
+                Intent intent = PDAInstanceActivity.newIntent( getActivity(), false );
                 startActivity( intent );
             }
         });

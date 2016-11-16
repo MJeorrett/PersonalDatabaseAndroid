@@ -3,7 +3,6 @@ package org.mjeorrett.android.personaldatabaseandroid;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import org.mjeorrett.android.personaldatabaseandroid.core.DoubleFragmentActivity;
 import org.mjeorrett.android.personaldatabaseandroid.core.PDAEntityListFragment;
@@ -14,7 +13,7 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
  * Created by user on 15/11/2016.
  */
 
-public class PDATableEditActivity extends DoubleFragmentActivity {
+public class PDATableActivity extends DoubleFragmentActivity {
 
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
