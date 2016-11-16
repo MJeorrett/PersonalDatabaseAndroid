@@ -79,6 +79,21 @@ public class PDATitleEditFragment extends Fragment {
                 mColumnName );
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate( R.layout.fragment_title_display, container, false );
+
+        mButton = (Button) view.findViewById( R.id.fragment_title_display_button );
+        mButton.setText( mEntity.getName() );
+
+        return view;
+    }
+
 //    @Override
 //    public void onSaveInstanceState( Bundle outState ) {
 //
@@ -110,19 +125,4 @@ public class PDATitleEditFragment extends Fragment {
 //                    mColumnName );
 //        }
 //    }
-
-    @Nullable
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate( R.layout.fragment_title_display, container, false );
-
-        mButton = (Button) view.findViewById( R.id.fragment_title_display_button );
-        mButton.setText( mEntity.getName() );
-
-        return view;
-    }
 }
