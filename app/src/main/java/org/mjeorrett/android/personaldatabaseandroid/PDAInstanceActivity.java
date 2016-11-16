@@ -35,7 +35,11 @@ public class PDAInstanceActivity extends SingleFragmentActivity {
         mStructureEditMode = getIntent().getExtras().getBoolean( KEY_STRUCTURE_EDIT_MODE );
 
         super.onCreate(savedInstanceState);
-        this.setTitle( "Databases" );
+        this.setTitle( "Edit Instance" );
+
+        if ( !mStructureEditMode ) {
+            this.setTitle( "Select Database" );
+        }
     }
 
     @Override

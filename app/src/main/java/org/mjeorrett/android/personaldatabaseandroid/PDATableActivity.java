@@ -17,15 +17,21 @@ public class PDATableActivity extends DoubleFragmentActivity {
 
     private Fragment mTopFragment;
     private Fragment mBottomFragment;
-    private boolean mAllowAddingChildren;
+    private boolean mStructureEditMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        mAllowAddingChildren = PDAEntityListFragment.getAllowAddingChildren( getIntent().getExtras() );
+        mStructureEditMode = PDAEntityListFragment.getAllowAddingChildren( getIntent().getExtras() );
 
         super.onCreate(savedInstanceState);
         this.setTitle( "Edit Table");
+
+        if ( !mStructureEditMode ) {
+
+            this.setTitle( "Edit Data" );
+            hideTopContainer();
+        }
     }
 
     @Nullable
@@ -64,7 +70,7 @@ public class PDATableActivity extends DoubleFragmentActivity {
                 null,
                 null,
                 null,
-                mAllowAddingChildren );
+                mStructureEditMode );
 
         return mBottomFragment;
     }

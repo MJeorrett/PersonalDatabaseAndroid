@@ -72,4 +72,14 @@ public abstract class DoubleFragmentActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    protected void hideTopContainer() {
+
+        View topTitle = findViewById( R.id.activity_double_fragment_top_title );
+        View bottomTitle = findViewById( R.id.activity_double_fragment_bottom_title );
+        View topContainer = findViewById( R.id.activity_double_fragment_top_container );
+        topTitle.setVisibility( View.GONE );
+        bottomTitle.setVisibility( View.GONE );
+        topContainer.setVisibility( View.GONE );
+    }
 }
