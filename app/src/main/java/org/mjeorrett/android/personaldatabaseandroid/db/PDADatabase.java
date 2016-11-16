@@ -129,11 +129,13 @@ public class PDADatabase extends SQLiteOpenHelper implements PDAEntity {
     public List<String> columnNamesForTable(String tableName ) {
 
         Cursor cursor = mDatabase.query( tableName, null, null, null, null, null, null, "1" );
-        String[] columnNames = cursor.getColumnNames();
+        String[] columnNamesArray = cursor.getColumnNames();
 
         cursor.close();
 
-        return Arrays.asList( columnNames );
+        List columnNamesList = Arrays.asList( columnNamesArray );
+
+        return columnNamesList;
     }
 
     protected void executeSql( String sql ) {

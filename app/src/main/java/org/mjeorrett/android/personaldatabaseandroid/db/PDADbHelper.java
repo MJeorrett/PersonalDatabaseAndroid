@@ -23,16 +23,19 @@ public class PDADbHelper {
 
     public static String sanitizeSQLLiteIdentifier(String uncleanName, List<String> existingNames, String callingTag ) {
 
-        if ( existingNames != null && existingNames.contains( uncleanName ) ) {
+        String cleanName = uncleanName.replaceAll( " ", "_" );
+        cleanName = cleanName.toLowerCase();
+
+        if ( existingNames != null && existingNames.contains( cleanName ) ) {
 
             String message =
                     String.format( "User tried to duplicate SQLLite name '%s' " +
-                            "so ignoring till I figure out something better to do", uncleanName );
+                            "so ignoring till I figure out something better to do", cleanName );
             Log.i( callingTag, message );
             return null;
         }
 
-        if ( uncleanName.equals( "" ) ) {
+        if ( cleanName.equals( "" ) ) {
             String message =
                     "User tried to create SQLLite entity with no name" +
                             " so ignoring till I figure out something better to do";
@@ -40,10 +43,7 @@ public class PDADbHelper {
             return null;
         }
 
-        String cleanString = uncleanName.replaceAll( " ", "_" );
-        cleanString = cleanString.toLowerCase();
-
-        return cleanString;
+        return cleanName;
     }
 
     @Nullable

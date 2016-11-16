@@ -207,10 +207,12 @@ public class PDAEntityListFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
-            Intent intent = new Intent( getActivity(), mNextActivity );
-            mEntity.putExtrasInIntent( intent );
+            if ( mNextActivity != null ) {
+                Intent intent = new Intent(getActivity(), mNextActivity);
+                mEntity.putExtrasInIntent(intent);
 
-            startActivity( intent );
+                startActivity(intent);
+            }
         }
 
         public void bindPDAEntity( PDAEntity entity ) {
