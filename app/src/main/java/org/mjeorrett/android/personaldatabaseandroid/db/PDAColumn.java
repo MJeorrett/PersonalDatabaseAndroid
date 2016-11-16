@@ -27,12 +27,13 @@ public class PDAColumn implements PDAEntity {
 
     @Override
     public String getChildTypeDescription() {
-
+//        return null as PDARow will never be the mEntity in a PDAEntityListFragment
         return null;
     }
 
     @Override
     public List<PDAEntity> getChildEntities() {
+//        return null as PDAColumn will never be the mEntity in a PDAEntityListFragment
         return null;
     }
 
@@ -44,12 +45,13 @@ public class PDAColumn implements PDAEntity {
 
     @Override
     public Intent putExtrasInIntent(Intent intent) {
+//        return null as PDAColumn will never be the mEntity in a PDAEntityListFragment
         return null;
     }
 
     @Override
     public void createNewChildEntity(String title) {
-
+//        not implemented as PDAColumn will never be the mEntity in a PDAEntityListFragment
     }
 
 }
