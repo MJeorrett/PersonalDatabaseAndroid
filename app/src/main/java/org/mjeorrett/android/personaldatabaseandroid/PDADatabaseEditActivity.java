@@ -64,8 +64,8 @@ public class PDADatabaseEditActivity extends DoubleFragmentActivity {
                 null,
                 null,
                 null,
-                PDATableEditActivity.class
-        );
+                PDATableEditActivity.class,
+                true );
 
         return mBottomFragment;
     }

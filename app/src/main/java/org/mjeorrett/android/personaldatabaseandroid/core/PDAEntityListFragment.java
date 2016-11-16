@@ -43,6 +43,8 @@ public class PDAEntityListFragment extends Fragment {
             "com.mjeorrett.android.personal_database_android.row_id";
     private static final String ARG_NEXT_ACTVIITY =
             "com.mjeorrett.android.personal_database_android.next_activity";
+    private static final String ARG_ALLOW_ADDING_CHILDREN =
+            "com.mjeorrett.android.personal_database_android.allow_adding_children";
 
     private RecyclerView mRecyclerView;
     private PDAEntityAdapter mAdapter;
@@ -52,6 +54,7 @@ public class PDAEntityListFragment extends Fragment {
     private String mTableName;
     private String mColumnName;
     private Class mNextActivity;
+    private boolean mAllowAddingChildren;
 
     public static PDAEntityListFragment newInstance(
 
@@ -60,7 +63,8 @@ public class PDAEntityListFragment extends Fragment {
             @Nullable String table,
             @Nullable String column,
             @Nullable UUID row_id,
-            @Nullable Class nextActivity ) {
+            @Nullable Class nextActivity,
+            boolean allowAddingChildren ) {
 
         Bundle args = new Bundle();
         args.putSerializable( ARG_ENTITY_TYPE, entityType );
@@ -69,6 +73,7 @@ public class PDAEntityListFragment extends Fragment {
         args.putString(ARG_COLUMN_NAME, column );
         args.putSerializable( ARG_ROW_ID, row_id );
         args.putSerializable( ARG_NEXT_ACTVIITY, nextActivity );
+        args.putBoolean( ARG_ALLOW_ADDING_CHILDREN, allowAddingChildren );
 
         PDAEntityListFragment fragment = new PDAEntityListFragment();
         fragment.setArguments( args );
@@ -80,15 +85,15 @@ public class PDAEntityListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu( true );
 
         Bundle args = getArguments();
 
-        PDAEntityType entityType = (PDAEntityType) args.getSerializable(ARG_ENTITY_TYPE);
-        mDatabaseName = args.getString(ARG_DATABASE_NAME);
-        mTableName = args.getString(ARG_TABLE_NAME);
-        mColumnName = args.getString(ARG_COLUMN_NAME);
-        mNextActivity = (Class) args.getSerializable(ARG_NEXT_ACTVIITY);
+        PDAEntityType entityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
+        mDatabaseName = args.getString( ARG_DATABASE_NAME );
+        mTableName = args.getString( ARG_TABLE_NAME );
+        mColumnName = args.getString( ARG_COLUMN_NAME );
+        mNextActivity = (Class) args.getSerializable( ARG_NEXT_ACTVIITY );
+        mAllowAddingChildren = args.getBoolean( ARG_ALLOW_ADDING_CHILDREN );
 
         mEntity = PDAEntityServer.getPDAEntity(
                 getActivity(),
@@ -97,6 +102,11 @@ public class PDAEntityListFragment extends Fragment {
                 mTableName,
                 mColumnName
         );
+
+        if ( mAllowAddingChildren ) {
+
+            setHasOptionsMenu(true);
+        }
     }
 
     @Nullable
@@ -121,7 +131,11 @@ public class PDAEntityListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate( R.menu.fragment_pdaentity_list, menu );
+
+        if ( mAllowAddingChildren ) {
+
+            inflater.inflate(R.menu.fragment_pdaentity_list, menu);
+        }
     }
 
     @Override

@@ -62,7 +62,8 @@ public class PDATableEditActivity extends DoubleFragmentActivity {
                 getTableName(),
                 null,
                 null,
-                null);
+                null,
+                true );
 
         return mBottomFragment;
     }

@@ -35,7 +35,8 @@ public class PDAInstanceEditActivity extends SingleFragmentActivity {
                 null,
                 null,
                 null,
-                PDADatabaseEditActivity.class);
+                PDADatabaseEditActivity.class,
+                true );
 
         return mFragment;
     }
