@@ -28,7 +28,7 @@ public class PDARow implements PDAEntity {
         String uuidString = data.get("uuid");
         mId = UUID.fromString(uuidString);
         data.remove("uuid");
-        data.remove("id");
+        data.remove("_id");
 
         mData = data;
     }
@@ -94,11 +94,8 @@ public class PDARow implements PDAEntity {
 
         for ( Map.Entry<String, String> entry : mData.entrySet() ) {
 
-            if ( !entry.getKey().equals( "_id") ) {
-
-                pair = new Pair<String, String>(entry.getKey(), entry.getValue());
-                fields.add(pair);
-            }
+            pair = new Pair<String, String>(entry.getKey(), entry.getValue());
+            fields.add(pair);
         }
 
         return fields;

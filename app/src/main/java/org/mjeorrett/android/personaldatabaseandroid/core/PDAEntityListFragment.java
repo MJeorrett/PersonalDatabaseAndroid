@@ -16,9 +16,11 @@ import android.widget.TextView;
 
 import org.mjeorrett.android.personaldatabaseandroid.R;
 import org.mjeorrett.android.personaldatabaseandroid.RowAddEditActivity;
+import org.mjeorrett.android.personaldatabaseandroid.db.PDAColumn;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityServer;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
+import org.mjeorrett.android.personaldatabaseandroid.db.PDARow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,7 +224,21 @@ public class PDAEntityListFragment extends Fragment {
         if ( mEntityType == PDAEntityType.TABLE ) {
 
             if (mStructureEditMode) {
-                childEntities = mEntity.getChildEntities( PDAEntityType.COLUMN );
+                List<PDAEntity> temp = mEntity.getChildEntities( PDAEntityType.COLUMN );
+                childEntities = new ArrayList<>();
+                PDAColumn aColumn;
+                String aColumnName;
+
+                for ( PDAEntity aEntity : temp ) {
+
+                    aColumn = (PDAColumn) aEntity;
+                    aColumnName = aColumn.getName();
+
+                    if ( !aColumnName.equals( "_id" ) && !aColumnName.equals( "uuid" ) ) {
+
+                        childEntities.add( aColumn );
+                    }
+                }
             } else {
                 childEntities = mEntity.getChildEntities( PDAEntityType.ROW );
             }
