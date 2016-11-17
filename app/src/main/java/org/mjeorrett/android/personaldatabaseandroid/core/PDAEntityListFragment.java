@@ -20,7 +20,6 @@ import org.mjeorrett.android.personaldatabaseandroid.db.PDAColumn;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntity;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityServer;
 import org.mjeorrett.android.personaldatabaseandroid.db.PDAEntityType;
-import org.mjeorrett.android.personaldatabaseandroid.db.PDARow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,6 @@ public class PDAEntityListFragment extends Fragment {
     private PDAEntity mEntity;
     private String mDatabaseName;
     private String mTableName;
-    private String mColumnName;
     private Class mNextActivity;
     private boolean mStructureEditMode;
     private boolean mOnTableActivity;
@@ -96,7 +94,6 @@ public class PDAEntityListFragment extends Fragment {
         mEntityType = (PDAEntityType) args.getSerializable( ARG_ENTITY_TYPE );
         mDatabaseName = args.getString( ARG_DATABASE_NAME );
         mTableName = args.getString( ARG_TABLE_NAME );
-        mColumnName = args.getString( ARG_COLUMN_NAME );
         mNextActivity = (Class) args.getSerializable( ARG_NEXT_ACTVIITY );
         mStructureEditMode = args.getBoolean(ARG_STRUCTURE_EDIT_MODE);
 
